@@ -1,24 +1,90 @@
 import Vue from 'vue'
 import App from './App.vue'
-import Vuetify from 'vuetify'
-import "vuetify/dist/vuetify.min.css";
 import vuetify from './plugins/vuetify';
+import VueRouter from 'vue-router';
+import Vuex from 'vuex';
 
-Vue.use(Vuetify, {
-  theme: {
-    primary: '#ee44aa',
-    secondary: '#424242',
-    accent: '#82B1FF',
-    error: '#FF5252',
-    info: '#2196F3',
-    success: '#4CAF50',
-    warning: '#FFC107',
+import Home from './components/Routes/Home'
+import Login from './components/Routes/Login'
+import Dashboard from './components/Routes/Dashboard/Dashboard'
+import Store from './components/Routes/Stores/Store';
+import Item from './components/Routes/Stores/Items/Item';
+import DefNavBar from "./components/NavBars/DefNavBar";
+import DashboardNavBar from "./components/NavBars/DashboardNavBar";
+import NotFound from './components/Common/404';
+
+Vue.use(Vuex);
+Vue.use(VueRouter);
+
+const store = new Vuex.Store({
+  state: {
+    drawer_open: false,
+    login_dialog_open: false,
+    authObj: {username: 'mamad', isSeller: 'false'},
+  },
+  mutations: {
+    openDrawer (state) {
+      state.drawer_open = true;
+    },
+    closeDrawer (state) {
+      state.drawer_open = false;
+    },
+    toggleLoginDialog (state) {
+      state.login_dialog_open = !state.login_dialog_open;
+    },
+    setLoginDialog (state, payload) {
+      state.login_dialog_open = payload.val;
+    }
   }
+});
+
+const router = new VueRouter({
+  mode: 'history',
+  routes: [
+    {path : '/login', components: {
+      default: Login,
+      nav: DefNavBar,
+      inApp: Login,
+    }},
+    {
+      path: '/dashboard', components: {
+        nav: DashboardNavBar,
+        inApp: Dashboard
+      }
+    },
+    {
+      path: '/store/:user/item/:item', components: {
+        nav: DefNavBar,
+        inApp: Item
+      }
+    },
+    {
+      path: '/store/:user', components: {
+        nav: DefNavBar,
+        inApp: Store
+      }
+    },
+    {
+      path : '/', components: {
+        default: Home,
+        nav: DefNavBar,
+        inApp: Home,    
+      }
+    },
+    {
+      path: '*', components: {
+        nav: DefNavBar,
+        inApp: NotFound
+      }
+    }
+  ]
 });
 
 Vue.config.productionTip = false
 
 new Vue({
   vuetify,
+  router,
+  store,
   render: h => h(App)
 }).$mount('#app')

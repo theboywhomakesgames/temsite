@@ -1,5 +1,5 @@
 <template>
-  <v-footer dark padless class="primary text-center d-inline-flex flex-column">
+  <v-footer padless dark class="primary text-center d-inline-flex flex-column">
     <v-card flat tile class="primary text-center d-inline-flex flex-column">
       <v-card-text>
         <v-btn v-for="icon in icons" :key="icon" class="mx-4 white--text" icon>

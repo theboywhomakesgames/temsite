@@ -1,21 +1,23 @@
 <template>
-  <v-app>
-    <navbar></navbar>
-    <v-main> Router should be here </v-main>
-    <my-footer> </my-footer>
-  </v-app>
+  <div id="app">
+    <v-app>
+      <router-view name="nav"> </router-view>
+      <v-main>
+        <router-view name="inApp"> </router-view>
+      </v-main>
+      <my-footer> </my-footer>
+    </v-app>
+  </div>
 </template>
 
 <script>
-import NavBar from "./components/NavBar";
 import Footer from "./components/Footer";
 
 export default {
   data: () => ({}),
   components: {
-    navbar: NavBar,
     "my-footer": Footer,
-  },
+  }
 };
 </script>
 
