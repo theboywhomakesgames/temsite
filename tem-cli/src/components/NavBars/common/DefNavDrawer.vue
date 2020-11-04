@@ -15,6 +15,23 @@
           </v-list-item-icon>
           <v-list-item-title>داشبورد</v-list-item-title>
         </v-list-item>
+
+        <v-list-item @click="openRegDialog" v-if="authObj === null">
+          <v-list-item-icon>
+            <v-icon class="ml-10">mdi-account-plus</v-icon>
+          </v-list-item-icon>
+          <v-list-item-title>ثبت نام</v-list-item-title>
+        </v-list-item>
+
+        <v-list-item @click="openLoginDialog" v-if="authObj === null">
+          <v-list-item-icon>
+            <v-icon class="ml-10">mdi-login</v-icon>
+          </v-list-item-icon>
+          <v-list-item-title>ورود</v-list-item-title>
+        </v-list-item>
+		
+		    <login-dialog :reg="isreg"></login-dialog>
+
       </v-list-item-group>
     </v-list>
   </v-navigation-drawer>
@@ -22,11 +39,16 @@
 
 <script>
 import { mapState, mapMutations } from 'vuex';
+import LoginDialog from '../../Common/Auth/LoginDialog';
 
 export default {
+	components: {
+		'login-dialog': LoginDialog,
+	},
   data: function() {
     return {
-      group: null
+      group: null,
+      isreg: false
     }
   },
   methods: {
@@ -39,9 +61,17 @@ export default {
     gotoDashboard: function() {
       this.$router.push('/dashboard');
     },
+    openLoginDialog: function() {
+      this.isreg = false;
+      this.toggleLoginDialog();
+    },
+    openRegDialog: function() {
+      this.isreg = true;
+      this.toggleLoginDialog();
+    },
     ...mapMutations([
-      'openDrawer', 'closeDrawer'
-    ])
+      'openDrawer', 'closeDrawer', 'toggleLoginDialog'
+    ]),
   },
   computed: {
     drawer: {

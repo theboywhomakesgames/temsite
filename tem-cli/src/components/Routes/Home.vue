@@ -30,6 +30,12 @@
 	</v-row>
 </template>
 
+<script>
+
+export default {
+}
+</script>
+
 <style>
 	.full-width {
 		width: 100%;

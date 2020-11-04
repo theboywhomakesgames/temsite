@@ -1,12 +1,12 @@
-import Vue from 'vue'
-import App from './App.vue'
+import Vue from 'vue';
+import App from './App.vue';
 import vuetify from './plugins/vuetify';
 import VueRouter from 'vue-router';
 import Vuex from 'vuex';
 
-import Home from './components/Routes/Home'
-import Login from './components/Routes/Login'
-import Dashboard from './components/Routes/Dashboard/Dashboard'
+import Home from './components/Routes/Home';
+import Login from './components/Routes/Login';
+import Dashboard from './components/Routes/Dashboard/Dashboard';
 import Store from './components/Routes/Stores/Store';
 import Item from './components/Routes/Stores/Items/Item';
 import DefNavBar from "./components/NavBars/DefNavBar";
@@ -20,7 +20,7 @@ const store = new Vuex.Store({
   state: {
     drawer_open: false,
     login_dialog_open: false,
-    authObj: {username: 'mamad', isSeller: 'false'},
+    authObj: null,
   },
   mutations: {
     openDrawer (state) {
@@ -80,11 +80,11 @@ const router = new VueRouter({
   ]
 });
 
-Vue.config.productionTip = false
+Vue.config.productionTip = false;
 
 new Vue({
   vuetify,
   router,
   store,
   render: h => h(App)
-}).$mount('#app')
+}).$mount('#app');
