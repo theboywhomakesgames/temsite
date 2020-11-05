@@ -40,7 +40,8 @@
               </v-col>
               <v-col cols="12">
                 <v-text-field
-                  label="آدرس ایمیل*"
+                  label="نام کاربری*"
+                  hint="این نام فروشگاه شما خواهد بود"
                   required
                 ></v-text-field>
               </v-col>
@@ -87,7 +88,7 @@
             </v-btn>
             <v-btn
               text
-              @click="dialog = false"
+              @click="register"
             >
               ثبت نام
             </v-btn>
@@ -101,14 +102,16 @@
             <v-row>
               <v-col cols="12">
                 <v-text-field
-                  label="آدرس ایمیل*"
+                  label="نام کاربری*"
                   required
+                  v-model="username"
                 ></v-text-field>
               </v-col>
               <v-col cols="12">
                 <v-text-field
                   label="گذرواژه*"
                   type="password"
+                  v-model="password"
                   required
                 ></v-text-field>
               </v-col>
@@ -127,7 +130,7 @@
             </v-btn>
             <v-btn
               text
-              @click="dialog = false"
+              @click="login"
             >
               ورود
             </v-btn>
@@ -141,20 +144,32 @@
 </template>
 
 <script>
-import { mapMutations } from 'vuex';
+import { mapMutations, mapActions } from 'vuex';
 
 export default {
   props: ['reg'],
   data: function() {
     return{
       tabidx: 0,
-      setTab: false
+      setTab: false,
+      username: "",
+      password: "",
+
     }
   },
   methods: {
     ...mapMutations([
       'setLoginDialog'
-    ])
+    ]),
+    ...mapActions([
+      'attemptLogin', 'registerNewUser'
+    ]),
+    login: function() {
+      this.attemptLogin({username: this.username, password: this.password});
+    },
+    register: function() {
+      
+    },
   },
   computed: {
     dialog: {
@@ -186,7 +201,5 @@ export default {
 </script>
 
 <style>
-  .full-widther{
-    width: 100%;
-  }
+
 </style>

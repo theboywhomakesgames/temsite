@@ -36,4 +36,8 @@ export default {
   direction: rtl;
   font-family: vazir;
 }
+
+.full-widther{
+  width: 100%;
+}
 </style>

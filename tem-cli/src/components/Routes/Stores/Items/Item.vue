@@ -1,18 +1,18 @@
 <template>
-  <div>
-    <h1>
+  <v-card class="ma-4" outlined elevation="0">
+    <v-img height="200" src="https://cdn.vuetifyjs.com/images/cards/cooking.png"></v-img>
+    <v-card-title>
       آیتم
-    </h1>
-    <h1 v-text="item"></h1>
-  </div>
+    </v-card-title>
+    <v-card-text>تیشرت با طرح مادرت</v-card-text>
+    <v-card-actions>
+      <v-btn outlined>سفارش</v-btn>
+    </v-card-actions>
+  </v-card>
 </template>
 
 <script>
 export default {
-  computed:{
-    item: function() {
-      return this.$route.params.item
-    }
-  }
+  
 }
 </script>

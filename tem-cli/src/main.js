@@ -3,6 +3,7 @@ import App from './App.vue';
 import vuetify from './plugins/vuetify';
 import VueRouter from 'vue-router';
 import Vuex from 'vuex';
+import axios from 'axios';
 
 import Home from './components/Routes/Home';
 import Login from './components/Routes/Login';
@@ -20,7 +21,7 @@ const store = new Vuex.Store({
   state: {
     drawer_open: false,
     login_dialog_open: false,
-    authObj: null,
+    authObj: { isAuth: false },
   },
   mutations: {
     openDrawer (state) {
@@ -34,6 +35,40 @@ const store = new Vuex.Store({
     },
     setLoginDialog (state, payload) {
       state.login_dialog_open = payload.val;
+    },
+    setAuthObj (state, authObj){
+      state.authObj = authObj;
+    }
+  },
+  actions: {
+    checkAuth: function({ commit }){
+      axios.get('/api/auth/isauth')
+      .then(result => {
+        commit('setAuthObj', result.data);
+      })
+      .catch(err => {
+        console.log(err);
+      });
+    },
+    attemptLogin: function({ commit, state }, data){
+      axios.post('/api/auth/attempt', {...data})
+      .then(result => {
+        commit('setAuthObj', result.data);
+        commit('setLoginDialog', { val: !state.authObj.isAuth });
+      })
+      .catch(err => {
+        console.log(err);
+      });
+    },
+    registerNewUser: function({ commit, state }, data){
+      axios.post('/api/reg', {...data})
+      .then(result => {
+        commit('checkAuth');
+        commit('setLoginDialog', { val: !state.authObj.isAuth });
+      })
+      .catch(err => {
+        console.log(err);
+      });
     }
   }
 });

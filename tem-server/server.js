@@ -29,7 +29,7 @@ app.disable('x-powered-by');
 
 // setting up helmet
 const helmet = require('helmet');
-app.use(helmet);
+app.use(helmet());
 
 // setting up parsers
 const parser = require('body-parser');
@@ -57,6 +57,13 @@ app.use(
 );
 
 // routing
+const loginRouter = require('./routers/Auth/loginRouter');
+const regRouter = require('./routers/Auth/regRouter');
+const apiRouter = require('./routers/apiRouter');
+
+app.use('/auth', loginRouter);
+app.use('/reg', regRouter);
+app.use('/ap', apiRouter);
 
 // put up the express app
 app.listen(3000, (res) => {

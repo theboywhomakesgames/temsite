@@ -6,7 +6,7 @@
 </template>
 
 <script>
-import LoginDialog from '../Common/Auth/LoginDialog';
+//import LoginDialog from '../Common/Auth/LoginDialog';
 import { mapMutations } from 'vuex';
 
 export default {
@@ -21,7 +21,7 @@ export default {
     ])
   },
   components: {
-    'login-dialog': LoginDialog
+    //'login-dialog': LoginDialog
   }
 }
 </script>
