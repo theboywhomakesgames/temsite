@@ -19,7 +19,11 @@ const itemSchema = new Schema({
   ],
   tags: [
     {type: String}
-  ]
+  ],
+  description: {
+    type: String,
+    required: true
+  }
 });
 
 itemSchema.statics.findByID = function(id) {

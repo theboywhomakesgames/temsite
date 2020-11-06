@@ -1,22 +1,12 @@
 <template>
   <div>
-    <h1>
-      فروشگاه 
+    <h1 class="text-center mt-8">
+      فروشگاه {{username}}
     </h1>
-    <h1 v-text="username"></h1>
     <v-container>
       <v-layout row wrap class="justify-center">
-        <v-flex class="ml-1 mr-1" xs11 sm5 lg3>
-          <tem-item></tem-item>
-        </v-flex>
-        <v-flex class="ml-1 mr-1" xs11 sm5 lg3>
-          <tem-item></tem-item>
-        </v-flex>
-        <v-flex class="ml-1 mr-1" xs11 sm5 lg3>
-          <tem-item></tem-item>
-        </v-flex>
-        <v-flex class="ml-1 mr-1" xs11 sm5 lg3>
-          <tem-item></tem-item>
+        <v-flex class="ml-1 mr-1" xs11 sm5 lg3 v-for="(item, idx) in items" :key="idx">
+          <tem-item :item="item"></tem-item>
         </v-flex>
       </v-layout>
     </v-container>
@@ -31,10 +21,6 @@ export default {
   data: function() {
     return {
       items: [
-        {name: "1"},
-        {name: "2"},
-        {name: "3"},
-        {name: "4"},
       ]
     }
   },
@@ -51,7 +37,7 @@ export default {
     getItemsOf_: function() {
       this.getItemsOf({username: this.username})
       .then(result => {
-        console.log(result.data);
+        this.items = result.data.items;
       })
       .catch(err => {
         console.log(err);

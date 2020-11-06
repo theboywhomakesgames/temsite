@@ -5,6 +5,7 @@ const ItemClass = require('../models/itemClass');
 const {ObjectId} = require('mongoose').Types;
 const _ = require('lodash');
 const user = require('../models/user');
+const { result } = require('lodash');
 
 module.exports.getItem = (req, res, next) => {
   let data = req.body;
@@ -72,11 +73,14 @@ module.exports.getItemsOfUser = (req, res, next) => {
 };
 
 module.exports.getItems = (req, res, next) => {
-  res.json({ success: false });
-};
-
-module.exports.getClasses = (req, res, next) => {
-  res.json({ success: false });
+  Item.find({...res.body})
+  .then(result => {
+    res.json(result);
+  })
+  .catch(err => {
+    console.log(err);
+    res.json({ success: false });
+  });
 };
 
 module.exports.classify = (req, res, next) => {
@@ -128,3 +132,40 @@ module.exports.addItemToUser = (req, res, next) => {
     res.json({ success: false });
   }
 };
+
+module.exports.removeItemsFromUser = (req, res, next) => {
+  try{
+    let data = req.body.items;
+    let username = req.body.username;
+
+    if(!data || data.length < 1 || !username){
+      return;
+    }
+
+    User.findOne({username})
+    .then(user => {
+      data.forEach(id => {
+        const index = user.items.indexOf(ObjectId(id));
+        if (index > -1) {
+          user.items = user.items.splice(index, 1);
+        }
+      });
+      
+      user.save()
+      .then(result => {
+        res.json({ success: true });
+      })
+      .catch(err => {
+        console.log(err);
+        res.json({ success: false });
+      });
+    })
+    .catch(err => {
+      console.log(err);
+      res.json({ success: false });
+    });
+  }
+  catch{
+    res.json({ success: false });
+  }
+}

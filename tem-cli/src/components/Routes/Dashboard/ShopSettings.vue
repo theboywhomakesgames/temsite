@@ -63,15 +63,13 @@
 
 <script>
 import Item from './Common/ItemCard';
+import { mapActions } from 'vuex';
 
 export default {
   data: function() {
     return {
       items: [
-        {name: "1"},
-        {name: "2"},
-        {name: "3"},
-        {name: "4"},
+        
       ]
     }
   },
@@ -82,6 +80,21 @@ export default {
     username: function() {
       return this.$route.params.user;
     }
+  },
+  methods: {
+    ...mapActions(['getAllItems']),
+    getItems: function(){
+      this.getAllItems()
+      .then(results => {
+        console.log(results.data);
+      })
+      .catch(err => {
+        console.log(err);
+      });
+    }
+  },
+  mounted() {
+    this.getItems();
   }
 }
 </script>

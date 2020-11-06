@@ -70,6 +70,9 @@ export default new Vuex.Store({
     },
     getItemsOf: function({commit}, data){
       return axios.post('/api/ap/getItemsOf', data);
+    },
+    getAllItems: function({commit}, data){
+      return axios.post('/api/ap/getItems', data);
     }
   }
 });
