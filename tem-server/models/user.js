@@ -23,7 +23,7 @@ const userSchema = new Schema({
     type: String,
   },
   items: [
-    { itemId: String }
+    { type: mongoose.Types.ObjectId }
   ]
 });
 

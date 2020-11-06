@@ -19,29 +19,11 @@
         <v-card-text>
           <v-container>
             <v-row>
-              <v-col
-                cols="12"
-                sm="6"
-              >
-                <v-text-field
-                  label="نام*"
-                  required
-                ></v-text-field>
-              </v-col>
-              <v-col
-                cols="12"
-                sm="6"
-              >
-                <v-text-field
-                  label="نام خانوادگی*"
-                  persistent-hint
-                  required
-                ></v-text-field>
-              </v-col>
               <v-col cols="12">
                 <v-text-field
                   label="نام کاربری*"
                   hint="این نام فروشگاه شما خواهد بود"
+                  v-model="username"
                   required
                 ></v-text-field>
               </v-col>
@@ -49,6 +31,7 @@
                 <v-text-field
                   label="کدپستی*"
                   hint="نا معتبر بودن کد پستی ممکن است موجب عدم ارسال درست شود. تم در این زمینه مسولیتی نمی پذیرد."
+                  v-model="zipcode"
                   required
                 ></v-text-field>
               </v-col>
@@ -56,6 +39,7 @@
                 <v-text-field
                   label="آدرس*"
                   hint="نا معتبر بودن آدرس ممکن است موجب عدم ارسال درست شود. تم در این زمینه مسولیتی نمی پذیرد."
+                  v-model="address"
                   required
                 ></v-text-field>
               </v-col>
@@ -63,6 +47,7 @@
                 <v-text-field
                   label="تلفن تماس*"
                   hint="تلفن تماس برای پیگیری مشکلات احتمالی در ارسال. در صورت اشتباه بودن تلفن تم مسولیتی نمی پذیرد."
+                  v-model="phone"
                   required
                 ></v-text-field>
               </v-col>
@@ -70,6 +55,7 @@
                 <v-text-field
                   label="گذرواژه*"
                   type="password"
+                  v-model="password"
                   required
                 ></v-text-field>
               </v-col>
@@ -154,7 +140,9 @@ export default {
       setTab: false,
       username: "",
       password: "",
-
+      address: "",
+      zipcode: "",
+      phone: ""
     }
   },
   methods: {
@@ -168,7 +156,13 @@ export default {
       this.attemptLogin({username: this.username, password: this.password});
     },
     register: function() {
-      
+      this.registerNewUser({
+        username: this.username,
+        password: this.password,
+        address: this.address,
+        zipcode: this.zipcode,
+        phone: this.phone
+      });
     },
   },
   computed: {

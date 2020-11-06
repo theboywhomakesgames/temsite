@@ -47,6 +47,7 @@ app.use(
   session({
     name: "temsite-sessions",
     secret: "random-ksadjf;;alskj32irjlkasjfg",
+    expires: new Date(Date.now() + (86400 * 1000)),
     resave: true,
     saveUninitialized: false,
     cookie: {

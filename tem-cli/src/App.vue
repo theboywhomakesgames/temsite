@@ -33,7 +33,6 @@ export default {
 }
 
 * {
-  direction: rtl;
   font-family: vazir;
 }
 

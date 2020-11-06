@@ -86,7 +86,7 @@ module.exports.login = (req, res, next) => {
 };
 
 module.exports.logout = (req, res, next) => {
-  req.session = {};
+  req.session.isAuth = false;
   res.json({ success: true });
 };
 

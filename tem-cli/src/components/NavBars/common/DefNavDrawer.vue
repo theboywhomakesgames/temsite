@@ -30,6 +30,13 @@
           <v-list-item-title>ورود</v-list-item-title>
         </v-list-item>
 
+        <v-list-item @click="logout" v-if="authObj.isAuth">
+          <v-list-item-icon>
+            <v-icon class="ml-10">mdi-login</v-icon>
+          </v-list-item-icon>
+          <v-list-item-title>خروج</v-list-item-title>
+        </v-list-item>
+
         <login-dialog :reg="isreg"></login-dialog>
       </v-list-item-group>
     </v-list>
@@ -69,7 +76,7 @@ export default {
       this.toggleLoginDialog();
     },
     ...mapMutations(["openDrawer", "closeDrawer", "toggleLoginDialog"]),
-    ...mapActions(['checkAuth']),
+    ...mapActions(['checkAuth', 'logout']),
   },
   computed: {
     drawer: {

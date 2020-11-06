@@ -25,6 +25,7 @@
 
 <script>
 import Item from './Items/Item';
+import { mapActions } from 'vuex';
 
 export default {
   data: function() {
@@ -44,6 +45,21 @@ export default {
     username: function() {
       return this.$route.params.user;
     }
+  },
+  methods: {
+    ...mapActions(['getItemsOf']),
+    getItemsOf_: function() {
+      this.getItemsOf({username: this.username})
+      .then(result => {
+        console.log(result.data);
+      })
+      .catch(err => {
+        console.log(err);
+      });
+    }
+  },
+  mounted() {
+    this.getItemsOf_();
   }
 }
 </script>

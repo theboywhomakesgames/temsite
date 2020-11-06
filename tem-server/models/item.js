@@ -17,6 +17,9 @@ const itemSchema = new Schema({
   image_urls: [
     {type: String, require: true}
   ],
+  tags: [
+    {type: String}
+  ]
 });
 
 itemSchema.statics.findByID = function(id) {
