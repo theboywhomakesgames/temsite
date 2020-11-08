@@ -107,33 +107,36 @@ export default {
 }
 
 const fetchMainPart = function() {
-  this.getAllItems()
+  if(this.authObj.isAuth && this.authObj.isSeller)
+    this.getAllItems()
+    .then(results => {
+      this.allItems = results.data;
+
+      this.getItemsOf({ username: this.authObj.username })
       .then(results => {
-        this.allItems = results.data;
+        let myItemIds = results.data.items;
+        this.myItems = myItemIds;
 
-        this.getItemsOf({ username: this.authObj.username })
-        .then(results => {
-          let myItemIds = results.data.items;
-          this.myItems = myItemIds;
-
-          // TODO: turn to for
-          this.allItems.forEach(el => {
-            let flag = false;
-            myItemIds.forEach(ell => {
-              if(ell._id === el._id){
-                flag = true;
-              }
-            });
-            if(!flag)
-              this.otherItems_.push(el);            
+        // TODO: turn to for
+        this.allItems.forEach(el => {
+          let flag = false;
+          myItemIds.forEach(ell => {
+            if(ell._id === el._id){
+              flag = true;
+            }
           });
-        })
-        .catch(err => {
-          console.log(err);
+          if(!flag)
+            this.otherItems_.push(el);            
         });
       })
       .catch(err => {
         console.log(err);
       });
+    })
+    .catch(err => {
+      console.log(err);
+    });
+  else
+    this.$router.push("/notfound");
 }
 </script>

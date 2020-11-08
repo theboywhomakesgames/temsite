@@ -8,7 +8,7 @@
           </v-list-item-icon>
           <v-list-item-title>صفحه اصلی</v-list-item-title>
         </v-list-item>
-
+        
         <v-list-item @click="logout" v-if="authObj.isAuth">
           <v-list-item-icon>
             <v-icon class="ml-10">mdi-login</v-icon>

@@ -31,7 +31,7 @@ export default new Vuex.Store({
     addToCart (state, {payload, cookie}){
       // payload is and array
       state.cart = _.uniqWith(state.cart.concat(payload), (first, second) => {
-        return first._id === second._id;
+        return first._id === second._id && first.count === second.count && first.size === second.size && first.color === second.color;
       });
       console.log("adding to cart");
       cookie.set("cart", {items: state.cart});
@@ -80,9 +80,12 @@ export default new Vuex.Store({
         console.log(err);
       });
     },
-    logout: function({commit, dispatch}){
+    logout: function({commit, dispatch, state}){
       axios.get('/api/auth/logout')
       .then(result => {
+        state.authObj.username = "";
+        state.authObj.isAuth = false;
+        state.authObj.isSeller = false;
         dispatch('checkAuth');
       })
       .catch(err => {

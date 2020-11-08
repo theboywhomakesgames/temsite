@@ -9,35 +9,35 @@
           <v-list-item-title>صفحه اصلی</v-list-item-title>
         </v-list-item>
 
-        <v-list-item @click="gotoDashboard" v-if="authObj.isAuth && authObj.isSeller">
+        <v-list-item @click="gotoDashboard" v-if="isSeller">
           <v-list-item-icon>
             <v-icon class="ml-10">mdi-view-dashboard</v-icon>
           </v-list-item-icon>
           <v-list-item-title>داشبورد</v-list-item-title>
         </v-list-item>
 
-        <v-list-item @click="gotoDashboard" v-if="authObj.isAuth && !authObj.isSeller">
+        <v-list-item @click="gotoDashboard" v-if="!isSeller && isAuth">
           <v-list-item-icon>
             <v-icon class="ml-10">mdi-view-dashboard</v-icon>
           </v-list-item-icon>
           <v-list-item-title>سفارشات من</v-list-item-title>
         </v-list-item>
 
-        <v-list-item @click="openRegDialog" v-if="!authObj.isAuth">
+        <v-list-item @click="openRegDialog" v-if="!isAuth">
           <v-list-item-icon>
             <v-icon class="ml-10">mdi-account-plus</v-icon>
           </v-list-item-icon>
           <v-list-item-title>ثبت نام</v-list-item-title>
         </v-list-item>
 
-        <v-list-item @click="openLoginDialog" v-if="!authObj.isAuth">
+        <v-list-item @click="openLoginDialog" v-if="!isAuth">
           <v-list-item-icon>
             <v-icon class="ml-10">mdi-login</v-icon>
           </v-list-item-icon>
           <v-list-item-title>ورود</v-list-item-title>
         </v-list-item>
 
-        <v-list-item @click="logout" v-if="authObj.isAuth">
+        <v-list-item @click="logout" v-if="isAuth">
           <v-list-item-icon>
             <v-icon class="ml-10">mdi-login</v-icon>
           </v-list-item-icon>
@@ -99,6 +99,12 @@ export default {
       },
     },
     ...mapState(["authObj"]),
+    isAuth: function() {
+      return this.authObj.isAuth;
+    },
+    isSeller: function() {
+      return this.authObj.isAuth && this.authObj.isSeller;
+    }
   }
 };
 </script>

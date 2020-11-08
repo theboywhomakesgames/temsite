@@ -19,7 +19,7 @@
       </v-row>
     </v-app-bar>
 
-    <defdrawer v-if="!authObj.isSeller"></defdrawer>
+    <defdrawer v-if="!authObj.isSeller || !authObj.isAuth"></defdrawer>
     <dashdrawer v-else></dashdrawer>
   </div>
 </template>

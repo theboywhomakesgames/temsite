@@ -36,11 +36,12 @@
           <td>{{ item.count }}</td>
           <td>{{ item.price }} تومان</td>
           <td>{{ item.price * item.count }} تومان</td>
+          <v-btn icon><v-icon color="red">mdi-close</v-icon></v-btn>
         </tr>
       </tbody>
     </v-simple-table>
     <h2 v-else>سبد خالی است</h2>
-    <v-btn color="success" class="ma-4" v-if="price > 0">پرداخت {{price}} تومان و تکمیل خرید</v-btn>
+    <v-btn color="success" class="ma-4" v-if="price > 0" @click="proceedOrder">پرداخت {{price}} تومان و تکمیل خرید</v-btn>
     <v-btn color="red" @click="resetCart" class="ma-4" v-if="price > 0">تخلیه سبد خرید</v-btn>
   </v-container>
 </template>
@@ -50,7 +51,7 @@ import { mapState, mapMutations } from 'vuex';
 
 export default {
   computed: {
-    ...mapState(['cart']),
+    ...mapState(['cart', 'authObj']),
     price: function() {
       let price = 0;
       for(let i = 0; i < this.cart.length; i++){
@@ -67,7 +68,15 @@ export default {
       }
       this.removeFromCart({payload, cookie: this.$cookies});
     },
-    ...mapMutations(['removeFromCart'])
+    ...mapMutations(['removeFromCart', 'setLoginDialog']),
+    proceedOrder: function() {
+      if(!this.authObj.isAuth){
+        this.setLoginDialog({val: true});
+      }else{
+        console.log("not implemented, clearing cart instead");
+        this.resetCart();
+      }
+    }
   }
 }
 </script>

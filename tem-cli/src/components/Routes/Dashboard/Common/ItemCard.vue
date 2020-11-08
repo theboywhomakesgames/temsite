@@ -1,10 +1,11 @@
 <template>
   <v-card class="ma-4" outlined elevation="0" >
-    <v-img height="200" src="https://cdn.vuetifyjs.com/images/cards/cooking.png"></v-img>
+    <v-img height="200" :src="item.image_urls[0]"></v-img>
     <v-card-title>
       {{item.name}}
     </v-card-title>
     <v-card-text>{{item.description}}</v-card-text>
+    <v-card-subtitle>{{item.price}} تومان<br/> 20000 تومان سود هر فروش</v-card-subtitle>
     <v-container>
       <v-chip color="secondary" v-for="(tg, idx) in item.tags" :key="idx">{{tg}}</v-chip>
       <v-switch
