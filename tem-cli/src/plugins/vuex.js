@@ -1,6 +1,7 @@
 import Vuex from 'vuex';
 import axios from 'axios';
 import Vue from 'vue';
+import _ from 'lodash';
 
 Vue.use(Vuex);
 
@@ -8,7 +9,8 @@ export default new Vuex.Store({
   state: {
     drawer_open: false,
     login_dialog_open: false,
-    authObj: { isAuth: false },
+    authObj: { isAuth: false, username: "" },
+    cart: [],
   },
   mutations: {
     openDrawer (state) {
@@ -25,7 +27,24 @@ export default new Vuex.Store({
     },
     setAuthObj (state, authObj){
       state.authObj = authObj;
-    }
+    },
+    addToCart (state, {payload, cookie}){
+      // payload is and array
+      state.cart = _.uniqWith(state.cart.concat(payload), (first, second) => {
+        return first._id === second._id;
+      });
+      console.log("adding to cart");
+      cookie.set("cart", {items: state.cart});
+    },
+    removeFromCart (state, {payload, cookie}){
+      for(let i = 0; i < payload.length; i++){
+        state.cart = state.cart.filter(el => {
+          return el._id !== payload[i];
+        });
+      }
+      console.log("removed from cart");
+      cookie.set("cart", {items: state.cart});
+    },
   },
   actions: {
     checkAuth: function({ commit }, payload){
@@ -73,6 +92,26 @@ export default new Vuex.Store({
     },
     getAllItems: function({commit}, data){
       return axios.post('/api/ap/getItems', data);
+    },
+    addItemToUser: function({commit}, data){
+      return axios.post('/api/ap/addItemToUser', data);
+    },
+    removeItemsFromUser: function({commit}, data){
+      return axios.post('/api/ap/removeItemsFromUser', data);
+    },
+    fetchCookies ({state, commit}, {cookie}){
+      try{
+        setTimeout(
+          () => {
+            console.log(cookie.isKey("cart"));
+            commit('addToCart', {payload: [...cookie.get("cart").items], cookie});
+          },
+          1000
+        );
+      }
+      catch(err){
+        console.log(err);
+      }
     }
   }
 });

@@ -23,6 +23,10 @@ const itemSchema = new Schema({
   description: {
     type: String,
     required: true
+  },
+  price: {
+    type: Number,
+    required: true,
   }
 });
 

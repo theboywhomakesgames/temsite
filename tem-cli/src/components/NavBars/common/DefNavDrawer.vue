@@ -92,9 +92,6 @@ export default {
       },
     },
     ...mapState(["authObj"]),
-  },
-  mounted() {
-    this.checkAuth();
   }
 };
 </script>

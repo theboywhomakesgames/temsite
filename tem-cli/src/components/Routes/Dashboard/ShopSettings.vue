@@ -10,17 +10,8 @@
 
           <v-container>
           <v-layout row wrap class="justify-center">
-            <v-flex class="ml-1 mr-1" xs11 sm5 lg3>
-              <tem-item></tem-item>
-            </v-flex>
-            <v-flex class="ml-1 mr-1" xs11 sm5 lg3>
-              <tem-item></tem-item>
-            </v-flex>
-            <v-flex class="ml-1 mr-1" xs11 sm5 lg3>
-              <tem-item></tem-item>
-            </v-flex>
-            <v-flex class="ml-1 mr-1" xs11 sm5 lg3>
-              <tem-item></tem-item>
+            <v-flex class="ml-1 mr-1" xs11 sm5 lg3 v-for="(itm, idx) in myItems" :key="idx">
+              <tem-item :item="itm" :sw_="true" :fetcher="fetchWithServer"></tem-item>
             </v-flex>
           </v-layout>
         </v-container>
@@ -28,28 +19,21 @@
         </v-expansion-panel-content>
       </v-expansion-panel>
 
-      <v-expansion-panel
-        v-for="(item,i) in 5"
-        :key="i"
-      >
+      <v-expansion-panel>
         <v-expansion-panel-header>
-          دسته {{i}}
+          محصولات دیگر
         </v-expansion-panel-header>
 
         <v-expansion-panel-content>
           <v-container>
+            <v-text-field
+              single-line
+              label="جستجوی تگ"
+              v-model="searchTerm"
+            ></v-text-field>
             <v-layout row wrap class="justify-center">
-              <v-flex class="ml-1 mr-1" xs11 sm5 lg3>
-                <tem-item></tem-item>
-              </v-flex>
-              <v-flex class="ml-1 mr-1" xs11 sm5 lg3>
-                <tem-item></tem-item>
-              </v-flex>
-              <v-flex class="ml-1 mr-1" xs11 sm5 lg3>
-                <tem-item></tem-item>
-              </v-flex>
-              <v-flex class="ml-1 mr-1" xs11 sm5 lg3>
-                <tem-item></tem-item>
+              <v-flex class="ml-1 mr-1" xs11 sm5 lg3 v-for="(itm, idx) in otherItems" :key="idx">
+                <tem-item :item="itm" :sw_="false" :fetcher="fetchWithServer"></tem-item>
               </v-flex>
             </v-layout>
           </v-container>
@@ -57,44 +41,99 @@
       </v-expansion-panel>
 
     </v-expansion-panels>
-    <h1 v-text="username"></h1>
   </div>
 </template>
 
 <script>
 import Item from './Common/ItemCard';
-import { mapActions } from 'vuex';
+import { mapActions, mapState } from 'vuex';
 
 export default {
   data: function() {
     return {
-      items: [
-        
-      ]
+      allItems: [
+
+      ],
+      otherItems_: [
+
+      ],
+      myItems: [
+
+      ],
+      searchTerm: "",
     }
   },
   components:{
     "tem-item": Item,
   },
   computed:{
-    username: function() {
-      return this.$route.params.user;
+    ...mapState(['authObj']),
+    otherItems: function() {
+      if(this.searchTerm.length < 1)
+        return this.otherItems_;
+      else{
+        let results = [];
+        this.otherItems_.forEach(itm => {
+          for(let i = 0; i < itm.tags.length; i++){
+            let theTag = itm.tags[i];
+            if(theTag.includes(this.searchTerm)){
+              results.push(itm);
+              break;
+            }
+          }
+        });
+        return results;
+      }
     }
   },
   methods: {
-    ...mapActions(['getAllItems']),
-    getItems: function(){
-      this.getAllItems()
+    ...mapActions(['getAllItems', 'getItemsOf', 'checkAuth']),
+    fetchWithServer: function() {
+      this.myItems = [];
+      this.otherItems_ = [];
+          
+      if(!this.authObj.isAuth){
+        this.checkAuth({
+          cb: () => {fetchMainPart.call(this);},
+        })
+      }else{
+        fetchMainPart.call(this);
+      }
+    }
+  },
+  mounted() {
+    this.fetchWithServer();
+  }
+}
+
+const fetchMainPart = function() {
+  this.getAllItems()
       .then(results => {
-        console.log(results.data);
+        this.allItems = results.data;
+
+        this.getItemsOf({ username: this.authObj.username })
+        .then(results => {
+          let myItemIds = results.data.items;
+          this.myItems = myItemIds;
+
+          // TODO: turn to for
+          this.allItems.forEach(el => {
+            let flag = false;
+            myItemIds.forEach(ell => {
+              if(ell._id === el._id){
+                flag = true;
+              }
+            });
+            if(!flag)
+              this.otherItems_.push(el);            
+          });
+        })
+        .catch(err => {
+          console.log(err);
+        });
       })
       .catch(err => {
         console.log(err);
       });
-    }
-  },
-  mounted() {
-    this.getItems();
-  }
 }
 </script>

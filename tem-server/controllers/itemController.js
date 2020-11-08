@@ -49,31 +49,44 @@ module.exports.getItemsOfUser = (req, res, next) => {
     res.json({ success: false });
     return;
   }
+  let sent = false;
   
   User.findOne({username: data.username})
-  .then(user => {
-    items = [];
-    user.items.forEach((itmid, idx) => {
-      Item.findOne({_id: itmid})
-      .then(itm => {
-        items.push(itm);
-        if(idx === user.items.length - 1){
-          res.json({items});
+  .then(async(user) => {
+    if(user.items.length > 0){
+      let items = [];
+
+      for(let i = 0; i < user.items.length; i++){
+        itmid = user.items[i];
+        try{
+          itm = await Item.findOne({_id: itmid});
+          items.push(itm);
         }
-      })
-      .catch(err => {
-        console.log(err);
-      });
-    });
+        catch(err){
+          console.log(err);
+          res.json({ success: false });
+          sent = true;
+        }
+      }
+
+      if(!sent){
+        res.json({ items });
+      }
+    }
+    else
+      res.json({items: []});
   })
   .catch(err => {
     console.log(err);
     res.json({ success: false });
+    sent = true;
   });
 };
 
 module.exports.getItems = (req, res, next) => {
-  Item.find({...res.body})
+  console.log("getting item");
+  console.log(req.body);
+  Item.find({...req.body})
   .then(result => {
     res.json(result);
   })
@@ -133,8 +146,9 @@ module.exports.addItemToUser = (req, res, next) => {
   }
 };
 
-module.exports.removeItemsFromUser = (req, res, next) => {
+module.exports.removeItemsFromUser = async(req, res, next) => {
   try{
+    console.log("removing item from user:");
     let data = req.body.items;
     let username = req.body.username;
 
@@ -142,28 +156,37 @@ module.exports.removeItemsFromUser = (req, res, next) => {
       return;
     }
 
-    User.findOne({username})
-    .then(user => {
-      data.forEach(id => {
-        const index = user.items.indexOf(ObjectId(id));
-        if (index > -1) {
-          user.items = user.items.splice(index, 1);
-        }
-      });
-      
+    console.log(data + " from " + username);
+    
+    try{
+      let user = await User.findOne({username});
+      console.log(user.items);
+      for(let i = 0; i < data.length; i++){
+
+        id = data[i];
+        console.log("rm " + id);
+
+        user.items = user.items.filter(itm => {
+          return itm._id != id;
+        });
+        
+      }
+      console.log(user.items);
       user.save()
       .then(result => {
+        console.log("saved");
         res.json({ success: true });
       })
       .catch(err => {
         console.log(err);
         res.json({ success: false });
       });
-    })
-    .catch(err => {
+
+    }
+    catch(err){
       console.log(err);
       res.json({ success: false });
-    });
+    }
   }
   catch{
     res.json({ success: false });

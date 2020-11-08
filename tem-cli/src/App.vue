@@ -12,12 +12,23 @@
 
 <script>
 import Footer from "./components/Footer";
+import { mapActions, mapMutations } from "vuex";
 
 export default {
   data: () => ({}),
   components: {
     "my-footer": Footer,
-  }
+  },
+  methods: {
+    ...mapActions(['checkAuth', 'fetchCookies']),
+    doFetchCookies() {
+      this.fetchCookies({ cookie: this.$cookies })
+    }
+  },
+  mounted() {
+    this.checkAuth();
+    this.doFetchCookies();
+  },
 };
 </script>
 
