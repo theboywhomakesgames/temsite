@@ -73,7 +73,7 @@ export default {
     },
     placeOrder: function() {
       if(this.chosenSize && this.chosenColor){
-        this.addToCart({payload: [{...this.thisItem, size: this.chosenSize, color: this.chosenColor, count: this.count}], cookie: this.$cookies});
+        this.addToCart({payload: [{...this.thisItem, size: this.chosenSize, color: this.chosenColor, count: this.count, seller: this.sellerUsername}], cookie: this.$cookies});
       }
       else{
         // err

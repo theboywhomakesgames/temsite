@@ -16,6 +16,7 @@ import Store from './components/Routes/Stores/Store';
 import Item from './components/Routes/Stores/Items/ItemDetails';
 import NavBar from "./components/NavBars/NavBar";
 import NotFound from './components/Common/404';
+import CartPage from './components/Routes/Cart';
 
 Vue.use(VueRouter);
 
@@ -51,6 +52,12 @@ const router = new VueRouter({
       path: '/store/:user', components: {
         nav: NavBar,
         inApp: Store
+      }
+    },
+    {
+      path: '/cart', components: {
+        nav: NavBar,
+        inApp: CartPage
       }
     },
     {

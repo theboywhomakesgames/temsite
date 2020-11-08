@@ -9,7 +9,7 @@
           <v-toolbar-title>فروشگاه تم</v-toolbar-title>
         </v-col>
         <v-col sm="1" class="d-inline-flex flex-row justify-end">
-          <v-btn icon v-if="cart.length > 0">
+          <v-btn icon v-if="cart.length > 0" @click="gotoCart">
             <v-badge color="secondary" :content="cart.length">
               <v-icon>mdi-cart</v-icon>
             </v-badge>
@@ -19,7 +19,7 @@
       </v-row>
     </v-app-bar>
 
-    <defdrawer v-if="authObj.isSeller"></defdrawer>
+    <defdrawer v-if="!authObj.isSeller"></defdrawer>
     <dashdrawer v-else></dashdrawer>
   </div>
 </template>
@@ -45,7 +45,10 @@ export default {
     ...mapMutations([
       'openDrawer',
       'closeDrawer'
-    ])
+    ]),
+    gotoCart: function() {
+      this.$router.push('/cart');
+    }
   },
   components: {
     defdrawer: DefNavDrawer,

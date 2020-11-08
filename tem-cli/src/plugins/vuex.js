@@ -38,9 +38,11 @@ export default new Vuex.Store({
     },
     removeFromCart (state, {payload, cookie}){
       for(let i = 0; i < payload.length; i++){
-        state.cart = state.cart.filter(el => {
-          return el._id !== payload[i];
-        });
+        if(state.cart.length > 1)
+          state.cart = state.cart.splice(parseInt(payload[i]), 1);
+        else{
+          state.cart = [];
+        }
       }
       console.log("removed from cart");
       cookie.set("cart", {items: state.cart});

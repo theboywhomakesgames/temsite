@@ -9,11 +9,18 @@
           <v-list-item-title>صفحه اصلی</v-list-item-title>
         </v-list-item>
 
-        <v-list-item @click="gotoDashboard" v-if="authObj.isAuth">
+        <v-list-item @click="gotoDashboard" v-if="authObj.isAuth && authObj.isSeller">
           <v-list-item-icon>
             <v-icon class="ml-10">mdi-view-dashboard</v-icon>
           </v-list-item-icon>
           <v-list-item-title>داشبورد</v-list-item-title>
+        </v-list-item>
+
+        <v-list-item @click="gotoDashboard" v-if="authObj.isAuth && !authObj.isSeller">
+          <v-list-item-icon>
+            <v-icon class="ml-10">mdi-view-dashboard</v-icon>
+          </v-list-item-icon>
+          <v-list-item-title>سفارشات من</v-list-item-title>
         </v-list-item>
 
         <v-list-item @click="openRegDialog" v-if="!authObj.isAuth">
