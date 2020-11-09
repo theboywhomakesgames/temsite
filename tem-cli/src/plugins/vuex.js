@@ -117,6 +117,14 @@ export default new Vuex.Store({
       catch(err){
         console.log(err);
       }
+    },
+    placeOrder : function({ commit, state }){
+      if(state.cart.length > 0 && state.authObj.isAuth){
+        return axios.post('/api/ap/placeOrder', {
+          buyer: state.authObj.username,
+          cart: [...state.cart]
+        });
+      }
     }
   }
 });

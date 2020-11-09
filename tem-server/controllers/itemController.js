@@ -1,6 +1,7 @@
 const { json } = require('body-parser');
 const Item = require('../models/item');
 const User = require('../models/user');
+const Order = require('../models/order');
 const ItemClass = require('../models/itemClass');
 const {ObjectId} = require('mongoose').Types;
 const _ = require('lodash');
@@ -189,6 +190,27 @@ module.exports.removeItemsFromUser = async(req, res, next) => {
     }
   }
   catch{
+    res.json({ success: false });
+  }
+}
+
+module.exports.placeOrder = (req, res, next) => {
+  try{
+    console.log("new order req");
+    let data = req.body;
+    let order = new Order(data);
+    order.save()
+    .then(result => {
+      console.log("placed order: " + result);
+      res.json({ success: true });
+    })
+    .catch(err => {
+      console.log(err);
+      res.json({ success: false });
+    });
+  }
+  catch(err){
+    console.log(err);
     res.json({ success: false });
   }
 }

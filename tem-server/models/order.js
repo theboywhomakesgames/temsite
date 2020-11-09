@@ -2,40 +2,34 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const orderSchema = new Schema({
-  buyerUsername: {
-    type: String,
-    required: true
-  },
-  sellerUsername: {
+  buyer: {
     type: String,
     required: true
   },
   cart: [
     {
-      itemId: {
+      _id: {
         type: String,
         required: true
       },
-      itemType: {
+      seller: {
+        type: String,
+        require: true
+      },
+      count: {
         type: Number,
         required: true
       },
-      itemVariant: {
+      color: {
+        type: String,
+        required: true
+      },
+      price: {
         type: Number,
         required: true
       }
     }
-  ],
-  name: {
-    type: String,
-    required: true
-  },
-  address: {
-    type: String,
-    required: true
-  },
-  zipCode: {
-    type: String,
-    required: true
-  }
+  ]
 });
+
+module.exports = mongoose.model('Order', orderSchema);

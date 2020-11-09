@@ -5,7 +5,7 @@ const { json } = require('body-parser');
 module.exports.register = (req, res, next) => {
   let data = req.body;
   console.log("new register:");
-  console.log(data);
+  console.log(data.username);
   if(!data.username){
     console.log("no username");
     res.json({ success: false });

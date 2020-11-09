@@ -10,5 +10,6 @@ router.post('/addItem', itemController.addItem);
 router.post('/getItemsOf', itemController.getItemsOfUser);
 router.post('/addItemToUser', itemController.addItemToUser);
 router.post('/removeItemsFromUser', itemController.removeItemsFromUser);
+router.post('/placeOrder', itemController.placeOrder);
 
 module.exports = router;

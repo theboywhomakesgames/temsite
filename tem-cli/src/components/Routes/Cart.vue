@@ -47,7 +47,7 @@
 </template>
 
 <script>
-import { mapState, mapMutations } from 'vuex';
+import { mapState, mapMutations, mapActions } from 'vuex';
 
 export default {
   computed: {
@@ -69,12 +69,23 @@ export default {
       this.removeFromCart({payload, cookie: this.$cookies});
     },
     ...mapMutations(['removeFromCart', 'setLoginDialog']),
+    ...mapActions(['placeOrder']),
     proceedOrder: function() {
       if(!this.authObj.isAuth){
         this.setLoginDialog({val: true});
       }else{
-        console.log("not implemented, clearing cart instead");
-        this.resetCart();
+        this.placeOrder()
+        .then(result => {
+          if(result.data.success){
+            //this.resetCart();
+          }
+          else{
+            console.log("there was a problem");
+          }
+        })
+        .catch(err => {
+          console.log(err);
+        });        
       }
     }
   }
