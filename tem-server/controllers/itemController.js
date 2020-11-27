@@ -214,7 +214,7 @@ module.exports.placeOrder = (req, res, next) => {
 
     let id = order._id.toString();
     console.log(id);
-    
+
     order.cart.forEach(element => {
       User.findOne({username: element.seller})
       .then(result => {
@@ -246,4 +246,17 @@ module.exports.placeOrder = (req, res, next) => {
     console.log(err);
     res.json({ success: false });
   }
+}
+
+module.exports.getOrdersOf = (req, res, next) => {
+  let username = req.body.username;
+
+  Order.find({ buyer: username })
+  .then(results => {
+    res.json({results: results, success: true});
+  })
+  .catch(err => {
+    res.json({success: false})
+    console.log(err);
+  })
 }

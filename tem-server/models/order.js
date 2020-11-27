@@ -10,6 +10,14 @@ const orderSchema = new Schema({
     type: String,
     required: true
   },
+  status: {
+    type: Number,
+    required: true,
+    default: 0
+  },
+  parcel_code: {
+    type: String
+  },
   cart: [
     {
       _id: {

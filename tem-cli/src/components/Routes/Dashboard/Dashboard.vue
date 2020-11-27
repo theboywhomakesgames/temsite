@@ -1,7 +1,7 @@
 <template>
   <seller-panel v-if="isSeller" />
   <div v-else-if="isCli">
-    <h1>پنل مشتری</h1>
+    <cli-panel/>
   </div>
   <div v-else>
     <h1>دسترسی غیر مجاز</h1>
@@ -10,11 +10,13 @@
 
 <script>
 import { mapState } from 'vuex';
+import CliPanel from './Common/CliPanel.vue';
 import SellerPanel from './Common/SellerPanel.vue';
 
 export default {
   components: {
-    "seller-panel": SellerPanel
+    "seller-panel": SellerPanel,
+    "cli-panel": CliPanel
   },
   computed: {
     ...mapState([

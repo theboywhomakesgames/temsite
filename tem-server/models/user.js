@@ -25,9 +25,6 @@ const userSchema = new Schema({
   items: [
     { type: mongoose.Types.ObjectId }
   ],
-  orders: [
-    { type: String }
-  ],
   sales: [
     { type: String }
   ],

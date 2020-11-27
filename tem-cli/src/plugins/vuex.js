@@ -125,6 +125,9 @@ export default new Vuex.Store({
           cart: [...state.cart]
         });
       }
+    },
+    getMyOrders: ({state}) => {
+      return axios.post('/api/ap/getOrdersOf', {username: state.authObj.username});      
     }
   }
 });
