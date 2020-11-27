@@ -199,14 +199,47 @@ module.exports.placeOrder = (req, res, next) => {
     console.log("new order req");
     let data = req.body;
     let order = new Order(data);
+
+    let date = Date.now();
+    order.final_at = date.toString();
+    
     order.save()
     .then(result => {
       console.log("placed order: " + result);
-      res.json({ success: true });
     })
     .catch(err => {
       console.log(err);
       res.json({ success: false });
+    });
+
+    let id = order._id.toString();
+    console.log(id);
+    
+    order.cart.forEach(element => {
+      User.findOne({username: element.seller})
+      .then(result => {
+        if(result.sales){
+          result.sales.push(id);
+          result.sales = _.uniqWith(result.sales, _.isEqual);
+        }
+        else{
+          result.sales = [];
+          result.sales.push(id);
+        }
+
+        result.save()
+        .then(result => {
+          res.json({ success: true });
+        })
+        .catch(err => {
+          console.log(err);
+          res.json({ success: false });
+        })
+      })
+      .catch(err => {
+        console.log(err);
+        res.json({ success: false });
+      });
     });
   }
   catch(err){

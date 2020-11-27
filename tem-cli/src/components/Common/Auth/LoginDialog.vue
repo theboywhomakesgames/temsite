@@ -56,6 +56,7 @@
                   label="گذرواژه*"
                   type="password"
                   v-model="password"
+                  @keypress="tryReg"
                   required
                 ></v-text-field>
               </v-col>
@@ -98,6 +99,7 @@
                   label="گذرواژه*"
                   type="password"
                   v-model="password"
+                  @keypress="tryLogin"
                   required
                 ></v-text-field>
               </v-col>
@@ -152,17 +154,28 @@ export default {
     ...mapActions([
       'attemptLogin', 'registerNewUser'
     ]),
+    tryLogin: function(e) {
+      if(e.keyCode === 13){
+        this.login();
+      }
+    },
+    tryReg: function(e) {
+      if(e.keyCode === 13){
+        this.register();
+      }
+    },
     login: function() {
       this.attemptLogin({username: this.username, password: this.password});
     },
     register: function() {
-      this.registerNewUser({
-        username: this.username,
-        password: this.password,
-        address: this.address,
-        zipcode: this.zipcode,
-        phone: this.phone
-      });
+      if(this.username.length > 3 && this.password.length > 5 && this.address.length > 5 && this.zipcode.length >= 9 && this.phone.length > 5)
+        this.registerNewUser({
+          username: this.username,
+          password: this.password,
+          address: this.address,
+          zipcode: this.zipcode,
+          phone: this.phone
+        });
     },
   },
   computed: {

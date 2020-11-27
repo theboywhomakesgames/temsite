@@ -24,7 +24,18 @@ const userSchema = new Schema({
   },
   items: [
     { type: mongoose.Types.ObjectId }
-  ]
+  ],
+  orders: [
+    { type: String }
+  ],
+  sales: [
+    { type: String }
+  ],
+  balance: {
+    type: Number,
+    required: true,
+    default: 0
+  }
 });
 
 userSchema.statics.findByID = function(id) {

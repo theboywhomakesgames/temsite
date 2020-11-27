@@ -1,9 +1,5 @@
 <template>
-  <div v-if="isSeller">
-    <h1>پنل فروشنده</h1>
-    <br/>
-    <h1 v-text="authObj.username"></h1>
-  </div>
+  <seller-panel v-if="isSeller" />
   <div v-else-if="isCli">
     <h1>پنل مشتری</h1>
   </div>
@@ -14,8 +10,12 @@
 
 <script>
 import { mapState } from 'vuex';
+import SellerPanel from './Common/SellerPanel.vue';
 
 export default {
+  components: {
+    "seller-panel": SellerPanel
+  },
   computed: {
     ...mapState([
       'authObj',

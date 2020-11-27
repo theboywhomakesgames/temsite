@@ -9,11 +9,11 @@
           <v-list-item-title>صفحه اصلی</v-list-item-title>
         </v-list-item>
         
-        <v-list-item @click="logout" v-if="authObj.isAuth">
+        <v-list-item @click="gotoDashboard" v-if="isSeller">
           <v-list-item-icon>
-            <v-icon class="ml-10">mdi-login</v-icon>
+            <v-icon class="ml-10">mdi-view-dashboard</v-icon>
           </v-list-item-icon>
-          <v-list-item-title>خروج</v-list-item-title>
+          <v-list-item-title>داشبورد</v-list-item-title>
         </v-list-item>
 
         <v-list-item-group v-model="group" v-if="isSeller">
@@ -36,6 +36,14 @@
               <v-icon class="ml-10">mdi-chart-box</v-icon>
             </v-list-item-icon>
             <v-list-item-title>اطلاعات</v-list-item-title>
+          </v-list-item>
+
+
+          <v-list-item @click="logout" v-if="authObj.isAuth">
+            <v-list-item-icon>
+              <v-icon class="ml-10">mdi-login</v-icon>
+            </v-list-item-icon>
+            <v-list-item-title>خروج</v-list-item-title>
           </v-list-item>
         </v-list-item-group>
       </v-list>

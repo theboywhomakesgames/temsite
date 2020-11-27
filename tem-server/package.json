@@ -20,6 +20,7 @@
     "helmet": "^4.2.0",
     "lodash": "^4.17.20",
     "mongodb": "^3.6.2",
-    "mongoose": "^5.10.11"
+    "mongoose": "^5.10.11",
+    "zarinpal-checkout": "^0.2.7"
   }
 }

@@ -6,6 +6,10 @@ const orderSchema = new Schema({
     type: String,
     required: true
   },
+  final_at: {
+    type: String,
+    required: true
+  },
   cart: [
     {
       _id: {
@@ -27,6 +31,15 @@ const orderSchema = new Schema({
       price: {
         type: Number,
         required: true
+      },
+      authCode: {
+        type: String
+      },
+      status: {
+        type: Number
+      },
+      Amount: {
+        type: Number
       }
     }
   ]

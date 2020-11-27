@@ -77,7 +77,7 @@ export default {
         this.placeOrder()
         .then(result => {
           if(result.data.success){
-            //this.resetCart();
+            this.resetCart();
           }
           else{
             console.log("there was a problem");
