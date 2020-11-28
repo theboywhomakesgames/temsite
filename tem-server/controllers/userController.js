@@ -1,6 +1,8 @@
 const User = require('../models/user');
 const bcrypt = require('bcrypt');
 const { json } = require('body-parser');
+const Order = require('../models/order');
+const mongoose = require('mongoose');
 
 module.exports.register = (req, res, next) => {
   let data = req.body;
@@ -98,3 +100,34 @@ module.exports.isAuth = (req, res, next) => {
 
 module.exports.getItemsOf = (req, res, next) => {
 };
+
+module.exports.getSalesOf = (req, res, next) => {
+  console.log("getting sales");
+  if(req.session.isSeller){
+    let username = req.body.username;
+
+    User.findOne({username: username})
+    .then(result => {
+      console.log(result.sales);
+      ids = []
+      result.sales.forEach(element => {
+        ids.push(mongoose.Types.ObjectId(element));
+      });
+      Order.find({ _id: { $in: ids } })
+      .then(results => {
+        res.json({success: true, sales: results});
+      })
+      .catch(err => {
+        console.log(err);
+        res.json({success: false});
+      });
+    })
+    .catch(err => {
+      console.log(err);
+      res.json({success: false});
+    });
+  }
+  else{
+    console.log("not seller");
+  }
+}

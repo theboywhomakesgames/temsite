@@ -128,6 +128,9 @@ export default new Vuex.Store({
     },
     getMyOrders: ({state}) => {
       return axios.post('/api/ap/getOrdersOf', {username: state.authObj.username});      
+    },
+    getMySales: ({state}) => {
+      return axios.post('api/ap/getSalesOf', {username: state.authObj.username});
     }
   }
 });

@@ -200,8 +200,8 @@ module.exports.placeOrder = (req, res, next) => {
     let data = req.body;
     let order = new Order(data);
 
-    let date = Date.now();
-    order.final_at = date.toString();
+    let date = new Date();
+    order.final_at = date.toISOString();
     
     order.save()
     .then(result => {
