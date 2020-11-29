@@ -14,6 +14,9 @@
             سایز
           </th>
           <th>
+            رنگ
+          </th>
+          <th>
             تعداد
           </th>
           <th>
@@ -33,10 +36,11 @@
           <td>{{ item.name }}</td>
           <td>{{ item.seller }}</td>
           <td>{{ item.size }}</td>
+          <td>{{ item.color }}</td>
           <td>{{ item.count }}</td>
           <td>{{ item.price }} تومان</td>
           <td>{{ item.price * item.count }} تومان</td>
-          <v-btn icon><v-icon color="red">mdi-close</v-icon></v-btn>
+          <v-btn @click="() => deleteFromCart(idx)" icon><v-icon color="red">mdi-close</v-icon></v-btn>
         </tr>
       </tbody>
     </v-simple-table>
@@ -47,6 +51,7 @@
 </template>
 
 <script>
+import { platform } from 'chart.js';
 import { mapState, mapMutations, mapActions } from 'vuex';
 
 export default {
@@ -61,9 +66,14 @@ export default {
     }
   },
   methods: {
+    deleteFromCart: function(index){
+      let payload = [];
+      payload.push(index);
+      this.removeFromCart({payload, cookie: this.$cookies});
+    },
     resetCart: function() {
-      let payload = []
-      for(let i in this.cart){
+      let payload = [];
+      for(let i = 0; i < this.cart.length; i++){
         payload.push(i);
       }
       this.removeFromCart({payload, cookie: this.$cookies});
@@ -76,6 +86,7 @@ export default {
       }else{
         this.placeOrder()
         .then(result => {
+          console.log(result.data);
           if(result.data.success){
             this.resetCart();
           }

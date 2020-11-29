@@ -36,7 +36,15 @@ const orderSchema = new Schema({
         type: String,
         required: true
       },
+      size: {
+        type: String,
+        required: true
+      },
       price: {
+        type: Number,
+        required: true
+      },
+      benefit: {
         type: Number,
         required: true
       },

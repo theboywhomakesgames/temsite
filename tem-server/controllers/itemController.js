@@ -199,13 +199,49 @@ module.exports.placeOrder = (req, res, next) => {
     console.log("new order req");
     let data = req.body;
     let order = new Order(data);
+    let failed = false;
 
     let date = new Date();
     order.final_at = date.toISOString();
     
     order.save()
-    .then(result => {
+    .then(async(result) => {
       console.log("placed order: " + result);
+      obj = {};
+      order.cart.forEach((element) => {
+        if(obj[element.seller]){
+          obj[element.seller].count++;
+
+          if(!element.benefit){
+            element.benefit = 0;
+          }
+
+          obj[element.seller].benefit += element.benefit * element.count;
+        }else{
+          if(!element.benefit){
+            element.benefit = 0;
+          }
+
+          obj[element.seller] = { count: element.count, benefit: element.benefit * element.count };
+        }
+      });
+
+      for(let key in obj){
+        await User.findOne({username: key})
+        .then(async(user) => {
+          user.sales.push(order._id);
+          user.balance += obj[key].benefit;
+          await user.save();
+        })
+        .catch(err => {
+          res.json({ success: false });
+          failed = true;
+        });
+      }
+      
+      if(!failed){
+        res.json({success: true});
+      }
     })
     .catch(err => {
       console.log(err);
@@ -214,33 +250,6 @@ module.exports.placeOrder = (req, res, next) => {
 
     let id = order._id.toString();
     console.log(id);
-
-    order.cart.forEach(element => {
-      User.findOne({username: element.seller})
-      .then(result => {
-        if(result.sales){
-          result.sales.push(id);
-          result.sales = _.uniqWith(result.sales, _.isEqual);
-        }
-        else{
-          result.sales = [];
-          result.sales.push(id);
-        }
-
-        result.save()
-        .then(result => {
-          res.json({ success: true });
-        })
-        .catch(err => {
-          console.log(err);
-          res.json({ success: false });
-        })
-      })
-      .catch(err => {
-        console.log(err);
-        res.json({ success: false });
-      });
-    });
   }
   catch(err){
     console.log(err);
@@ -259,4 +268,19 @@ module.exports.getOrdersOf = (req, res, next) => {
     res.json({success: false})
     console.log(err);
   })
+}
+
+module.exports.getBalanceOf = (req, res, next) => {
+  let username = req.body.username;
+  console.log("getting balance of : " + username);
+
+  User.findOne({ username: username })
+  .then(user => {
+    console.log(user.balance);
+    res.json({success: true, balance: user.balance});
+  })
+  .catch(err => {
+    console.log(err);
+    res.json({success: false, balance: 0});
+  });
 }

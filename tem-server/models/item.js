@@ -27,6 +27,10 @@ const itemSchema = new Schema({
   price: {
     type: Number,
     required: true,
+  },
+  benefit: {
+    type: Number,
+    required: true
   }
 });
 

@@ -4,7 +4,7 @@
       {{this.authObj.username}} عزیز <br/>
       خوش آمدید
     </h1>
-    <h3 class="orange--text">موجودی حساب: 55000 تومان</h3>
+    <h3 class="orange--text">موجودی حساب: {{balance}} تومان</h3>
     <chart :data="data" class="mt-8"/>
   </v-container>
 </template>
@@ -16,7 +16,8 @@ import Chart from './Charts/Chart.js';
 export default {
   data: function() {
     return {
-      sales: []
+      sales: [],
+      balance: 0
     }
   },
   components: {
@@ -39,7 +40,7 @@ export default {
         let number = 0;
         sale.cart.forEach(item => {
           if(item.seller === this.authObj.username)
-            number++;
+            number += item.count;
         });
 
         let date = new Date(sale.final_at);
@@ -51,12 +52,20 @@ export default {
     }
   },
   methods: {
-    ...mapActions(['getMySales'])
+    ...mapActions(['getMySales', 'getMyBalance'])
   },
   mounted() {
     this.getMySales()
     .then(result => {
       this.sales = result.data.sales;
+    })
+    .catch(err => {
+      console.log(err);
+    });
+
+    this.getMyBalance()
+    .then(result => {
+      this.balance = result.data.balance;
     })
     .catch(err => {
       console.log(err);

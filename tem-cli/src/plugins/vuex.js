@@ -37,13 +37,15 @@ export default new Vuex.Store({
       cookie.set("cart", {items: state.cart});
     },
     removeFromCart (state, {payload, cookie}){
-      for(let i = 0; i < payload.length; i++){
-        if(state.cart.length > 1)
-          state.cart = state.cart.splice(parseInt(payload[i]), 1);
-        else{
-          state.cart = [];
+      let newCart = [];
+      for(let i = 0; i < state.cart.length; i++){
+        if(!payload.includes(i)){
+          newCart.push(state.cart[i]);
         }
       }
+      state.cart = newCart;
+      console.log(state.cart);
+
       console.log("removed from cart");
       cookie.set("cart", {items: state.cart});
     },
@@ -131,6 +133,9 @@ export default new Vuex.Store({
     },
     getMySales: ({state}) => {
       return axios.post('api/ap/getSalesOf', {username: state.authObj.username});
+    },
+    getMyBalance: ({state}) => {
+      return axios.post('api/ap/getBalanceOf', {username: state.authObj.username});
     }
   }
 });

@@ -4,7 +4,7 @@
 			<v-col sm="12" class="full-width d-inline-flex justify-center align-center flex-column">
 				<img src="../../assets/logo.png" class="temlogo"/>
 				<h1 class="black--text text-center">فروشگاه محصولات سفارشی تم</h1>
-				<h6 class="black--text text-center mt-4">روشی ساده و اتومات برای کسب درآمد ثابت از فضای مجازی</h6>
+				<h6 class="black--text text-center mt-4">اولین و تنها ارايه دهنده خدمات مرچ و محصولات سفارشی</h6>
 			</v-col>
 		</v-parallax>
 

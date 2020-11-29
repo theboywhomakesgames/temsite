@@ -14,5 +14,6 @@ router.post('/removeItemsFromUser', itemController.removeItemsFromUser);
 router.post('/placeOrder', itemController.placeOrder);
 router.post('/getOrdersOf', itemController.getOrdersOf);
 router.post('/getSalesOf', userController.getSalesOf);
+router.post('/getBalanceOf', itemController.getBalanceOf);
 
 module.exports = router;
