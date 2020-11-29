@@ -21,8 +21,21 @@
             <v-row>
               <v-col cols="12">
                 <v-text-field
+                  label="نام*"
+                  v-model="fname"
+                  required
+                ></v-text-field>
+              </v-col>
+              <v-col cols="12">
+                <v-text-field
+                  label="نام خانوادگی*"
+                  v-model="lname"
+                  required
+                ></v-text-field>
+              </v-col>
+              <v-col cols="12">
+                <v-text-field
                   label="نام کاربری*"
-                  hint="این نام فروشگاه شما خواهد بود"
                   v-model="username"
                   required
                 ></v-text-field>
@@ -140,6 +153,8 @@ export default {
     return{
       tabidx: 0,
       setTab: false,
+      fname: "",
+      lname: "",
       username: "",
       password: "",
       address: "",
@@ -170,6 +185,8 @@ export default {
     register: function() {
       if(this.username.length > 3 && this.password.length > 5 && this.address.length > 5 && this.zipcode.length >= 9 && this.phone.length > 5)
         this.registerNewUser({
+          fname: this.fname,
+          lname: this.lname,
           username: this.username,
           password: this.password,
           address: this.address,

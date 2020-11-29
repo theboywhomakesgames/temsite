@@ -56,6 +56,14 @@ export default {
     this.getMyOrders()
     .then((result) => {
       this.orders = result.data.results;
+
+      for(let key in this.orders){
+        let p = 0;
+        this.orders[key].cart.forEach(element => {
+          p += element.price * element.count;
+        });
+        this.orders[key].price = p;
+      }
     })
     .catch((err) => {
       console.log(err);

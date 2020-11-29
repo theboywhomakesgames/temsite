@@ -31,14 +31,15 @@
           v-model="chosenColor"
         ></v-select>
         <v-text-field label="تعداد" type="number" v-model="count"></v-text-field>
-        <v-btn @click="placeOrder">افزودن به سبد خرید</v-btn>
+        <v-btn color="primary" @click="placeOrder">افزودن به سبد خرید</v-btn><br/>
+        <v-btn color="secondary" class="mt-2" :disabled="canProceed" @click="gotoCart">تکمیل خرید</v-btn>
       </v-flex>
     </v-layout>      
   </v-container>
 </template>
 
 <script>
-import { mapActions, mapMutations } from 'vuex';
+import { mapActions, mapMutations, mapState } from 'vuex';
 
 export default {
   data: function() {
@@ -52,6 +53,10 @@ export default {
     }
   },
   computed: {
+    ...mapState(['cart']),
+    canProceed: function() {
+      return !this.cart.length > 0;
+    },
     itemId: function() {
       return this.$route.params.item;
     },
@@ -80,6 +85,9 @@ export default {
         // err
 
       }
+    },
+    gotoCart: function() {
+      this.$router.push("/cart");
     }
   },
   mounted() {
