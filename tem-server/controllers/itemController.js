@@ -192,7 +192,7 @@ module.exports.removeItemsFromUser = async(req, res, next) => {
   catch{
     res.json({ success: false });
   }
-}
+};
 
 module.exports.placeOrder = (req, res, next) => {
   try{
@@ -255,7 +255,7 @@ module.exports.placeOrder = (req, res, next) => {
     console.log(err);
     res.json({ success: false });
   }
-}
+};
 
 module.exports.getOrdersOf = (req, res, next) => {
   let username = req.body.username;
@@ -268,7 +268,7 @@ module.exports.getOrdersOf = (req, res, next) => {
     res.json({success: false})
     console.log(err);
   })
-}
+};
 
 module.exports.getBalanceOf = (req, res, next) => {
   let username = req.body.username;
@@ -283,4 +283,4 @@ module.exports.getBalanceOf = (req, res, next) => {
     console.log(err);
     res.json({success: false, balance: 0});
   });
-}
+};

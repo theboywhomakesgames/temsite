@@ -24,12 +24,22 @@ const userSchema = new Schema({
   phone: {
     type: String,
   },
-  address: {
-    type: String,
-  },
-  zipcode: {
-    type: String,
-  },
+  addresses: [
+    {
+      address: {
+        type: String,
+        required: true
+      },
+      zipcode: {
+        type: String,
+        required: true
+      },
+      city: {
+        type: String,
+        required: true
+      }
+    }
+  ],
   items: [
     { type: mongoose.Types.ObjectId }
   ],

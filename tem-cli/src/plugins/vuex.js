@@ -136,6 +136,9 @@ export default new Vuex.Store({
     },
     getMyBalance: ({state}) => {
       return axios.post('api/ap/getBalanceOf', {username: state.authObj.username});
+    },
+    getMyAddresses: ({state, dispatch}) => {
+      return axios.post('api/ap/getAddressesOf', {username: state.authObj.username});
     }
   }
 });

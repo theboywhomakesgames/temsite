@@ -7,8 +7,9 @@ const orderSchema = new Schema({
     required: true
   },
   final_at: {
-    type: String,
-    required: true
+    type: Date,
+    required: true,
+    default: Date.now
   },
   status: {
     type: Number,

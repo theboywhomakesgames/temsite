@@ -8,13 +8,16 @@
           </router-link>
           <v-toolbar-title>فروشگاه تم</v-toolbar-title>
         </v-col>
-        <v-col sm="1" class="d-inline-flex flex-row justify-end">
+        <v-col sm="1" class="d-inline-flex align-center flex-row justify-end">
           <v-btn icon v-if="cart.length > 0" @click="gotoCart">
             <v-badge color="secondary" :content="cart.length">
               <v-icon>mdi-cart</v-icon>
             </v-badge>
           </v-btn>
-          <v-app-bar-nav-icon @click="openDrawer"></v-app-bar-nav-icon>
+
+          <v-btn @click="openDrawer" rounded>
+            منو<v-app-bar-nav-icon></v-app-bar-nav-icon>
+          </v-btn>
         </v-col>
       </v-row>
     </v-app-bar>

@@ -47,6 +47,18 @@
     <h2 v-else>سبد خالی است</h2>
     <v-btn color="success" class="ma-4" v-if="price > 0" @click="proceedOrder">پرداخت {{price}} تومان و تکمیل خرید</v-btn>
     <v-btn color="red" @click="resetCart" class="ma-4" v-if="price > 0">تخلیه سبد خرید</v-btn>
+
+    <hr class="mt-8"/>
+    <h3 class="mt-8 mb-4">انتخاب آدرس</h3>
+    <v-card @click="chosen = idx" v-for="(itm, idx) in addresses" :key="idx" max-height="300" max-width="300" outlined :color="idx === chosen ? 'secondary' : '#ddd'">
+      <v-card-title>
+        {{itm.city}}
+      </v-card-title>
+      <v-card-text>
+        {{itm.address}}
+        {{itm.zipcode}}
+      </v-card-text>
+    </v-card>
   </v-container>
 </template>
 
@@ -55,6 +67,12 @@ import { platform } from 'chart.js';
 import { mapState, mapMutations, mapActions } from 'vuex';
 
 export default {
+  data: function() {
+    return {
+      addresses: [],
+      chosen: 0
+    };
+  },
   computed: {
     ...mapState(['cart', 'authObj']),
     price: function() {
@@ -79,7 +97,7 @@ export default {
       this.removeFromCart({payload, cookie: this.$cookies});
     },
     ...mapMutations(['removeFromCart', 'setLoginDialog']),
-    ...mapActions(['placeOrder']),
+    ...mapActions(['placeOrder', 'getMyAddresses']),
     proceedOrder: function() {
       if(!this.authObj.isAuth){
         this.setLoginDialog({val: true});
@@ -98,7 +116,16 @@ export default {
           console.log(err);
         });        
       }
-    }
+    },
+  },
+  mounted() {
+    this.getMyAddresses()
+    .then(result => {
+      this.addresses = result.data.addresses;
+    })
+    .catch(err => {
+      console.log(err);
+    });
   }
 }
 </script>

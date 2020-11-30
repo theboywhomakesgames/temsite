@@ -21,7 +21,7 @@ module.exports.register = (req, res, next) => {
           console.log("user exists");
           res.json({ success: false });
         }else{
-          let u = new User({...data, is_seller: false});
+          let u = new User({...data, addresses: [{address: data.address, zipcode: data.zipcode, city: data.zipcode}], is_seller: false});
           u.save()
           .then(result => {
             console.log("successfully created a user");
@@ -130,4 +130,24 @@ module.exports.getSalesOf = (req, res, next) => {
   else{
     console.log("not seller");
   }
+}
+
+// TODO: fix the naming and stuff
+module.exports.getAddressesOf = (req, res, next) => {
+  console.log("getting addresses");
+  let username = req.session.username;
+  console.log(username);
+  User.findOne({username: username})
+  .then(result => {
+    if(result)
+      res.json({success: true, addresses: result.addresses});
+    else{
+      console.log("not found");
+      res.json({success: false});
+    }
+  })
+  .catch(err => {
+    console.log(err);
+    res.json({success: false});
+  });
 }

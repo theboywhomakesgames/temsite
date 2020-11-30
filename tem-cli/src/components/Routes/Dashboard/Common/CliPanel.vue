@@ -47,6 +47,7 @@ export default {
     return {
       orders: [],
       status: [
+        "در انتظار پرداخت",
         "در حال بررسی",
         "ارسال شد"
       ]
@@ -64,6 +65,8 @@ export default {
         });
         this.orders[key].price = p;
       }
+
+      this.orders = this.orders.reverse();
     })
     .catch((err) => {
       console.log(err);

@@ -42,9 +42,9 @@
               </v-col>
               <v-col cols="12">
                 <v-text-field
-                  label="کدپستی*"
-                  hint="نا معتبر بودن کد پستی ممکن است موجب عدم ارسال درست شود. تم در این زمینه مسولیتی نمی پذیرد."
-                  v-model="zipcode"
+                  label="نام شهر*"
+                  hint="نا معتبر بودن آدرس ممکن است موجب عدم ارسال درست شود. تم در این زمینه مسولیتی نمی پذیرد."
+                  v-model="city"
                   required
                 ></v-text-field>
               </v-col>
@@ -53,6 +53,14 @@
                   label="آدرس*"
                   hint="نا معتبر بودن آدرس ممکن است موجب عدم ارسال درست شود. تم در این زمینه مسولیتی نمی پذیرد."
                   v-model="address"
+                  required
+                ></v-text-field>
+              </v-col>
+              <v-col cols="12">
+                <v-text-field
+                  label="کدپستی*"
+                  hint="نا معتبر بودن کد پستی ممکن است موجب عدم ارسال درست شود. تم در این زمینه مسولیتی نمی پذیرد."
+                  v-model="zipcode"
                   required
                 ></v-text-field>
               </v-col>
@@ -159,7 +167,8 @@ export default {
       password: "",
       address: "",
       zipcode: "",
-      phone: ""
+      phone: "",
+      city: ""
     }
   },
   methods: {
@@ -191,8 +200,12 @@ export default {
           password: this.password,
           address: this.address,
           zipcode: this.zipcode,
-          phone: this.phone
+          phone: this.phone,
+          city: this.city
         });
+      else{
+        alert("طول نام کاربری و پسورد باید بیشتر از ۵ باشد. طول آدرس و کد پستی باید بیشتر از ۹ باشد. طول شماره تلفن باید بیشتر از ۵ باشد.");
+      }
     },
   },
   computed: {
