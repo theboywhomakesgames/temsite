@@ -44,7 +44,7 @@ module.exports.register = (req, res, next) => {
 };
 
 module.exports.login = (req, res, next) => {
-  console.log('processing login:');
+  console.log('processing login req:');
   username = req.body.username;
   password = req.body.password;
 
@@ -67,8 +67,9 @@ module.exports.login = (req, res, next) => {
           res.json({ isAuth: req.session.isAuth, isSeller: req.session.isSeller, username: req.session.username, success: true });
         }
         else{
+          console.log("wrong pass");
           req.session.isAuth = false;
-          res.json({ success: false });
+          res.json({ success: false, err_message: "مشخصات اشتباه است" });
         }
       })
       .catch(err => {
@@ -76,10 +77,11 @@ module.exports.login = (req, res, next) => {
       });
     }
     else{
+      console.log("no such user");
       req.session.isAuth = false;
       req.session.isSeller = false;
       req.session.username = null;
-      res.json({ isAuth: req.session.isAuth, isSeller: req.session.isSeller, username: req.session.username, success: true });
+      res.json({ success: false, err_message: "مشخصات اشتباه است", isAuth: req.session.isAuth, isSeller: req.session.isSeller, username: req.session.username});
     }
   })
   .catch((err) => {
@@ -151,3 +153,29 @@ module.exports.getAddressesOf = (req, res, next) => {
     res.json({success: false});
   });
 }
+
+module.exports.addAddress = (req, res, next) => {
+  let username = req.session.username;
+  let newAddresses = req.body.addresses;
+  User.find({username: username})
+  .then(user => {
+    if(user){
+      user.addresses = user.addresses.concat(newAddresses);
+      user.save()
+      .then(result => {
+        res.json({success: true});
+      })
+      .catch(err => {
+        console.log(err);
+        res.json({success: false, err_message: "مشکل در سیو"});        
+      });
+    }
+    else{
+      res.json({success: false, err_message: "یوزر نیم اشتباه"});
+    }
+  })
+  .catch(err => {
+    console.log(err);
+    res.json({success: false, err_message: "یوزر نیم اشتباه"});
+  });
+};

@@ -31,8 +31,8 @@
           v-model="chosenColor"
         ></v-select>
         <v-text-field label="تعداد" type="number" v-model="count"></v-text-field>
-        <v-btn color="primary" @click="placeOrder">افزودن به سبد خرید</v-btn><br/>
-        <v-btn color="secondary" class="mt-2" :disabled="canProceed" @click="gotoCart">تکمیل خرید</v-btn>
+        <v-btn color="success" @click="placeOrder">افزودن به سبد خرید</v-btn><br/>
+        <v-btn color="success" class="mt-2" :disabled="canProceed" @click="gotoCart">تکمیل خرید</v-btn>
       </v-flex>
     </v-layout>      
   </v-container>

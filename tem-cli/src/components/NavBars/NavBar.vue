@@ -9,14 +9,14 @@
           <v-toolbar-title>فروشگاه تم</v-toolbar-title>
         </v-col>
         <v-col sm="1" class="d-inline-flex align-center flex-row justify-end">
-          <v-btn icon v-if="cart.length > 0" @click="gotoCart">
+          <v-btn icon v-if="cart.length > 0" @click="gotoCart" class="ml-4">
             <v-badge color="secondary" :content="cart.length">
               <v-icon>mdi-cart</v-icon>
             </v-badge>
           </v-btn>
 
-          <v-btn @click="openDrawer" rounded>
-            منو<v-app-bar-nav-icon></v-app-bar-nav-icon>
+          <v-btn @click="openDrawer" rounded color="white" class="black--text">
+            منو<v-app-bar-nav-icon class="black--text"></v-app-bar-nav-icon>
           </v-btn>
         </v-col>
       </v-row>

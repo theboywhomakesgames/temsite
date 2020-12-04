@@ -11,6 +11,8 @@ export default new Vuex.Store({
     login_dialog_open: false,
     authObj: { isAuth: false, username: "" },
     cart: [],
+    wrong_login: 0,
+    err: "مشکل ارتباط با اینترنت"
   },
   mutations: {
     openDrawer (state) {
@@ -64,22 +66,39 @@ export default new Vuex.Store({
       });
     },
     attemptLogin: function({ commit, state }, data){
+      state.wrong_login = 0;
       axios.post('/api/auth/attempt', {...data})
       .then(result => {
         commit('setAuthObj', result.data);
         commit('setLoginDialog', { val: !state.authObj.isAuth });
+        if(!result.data.success){
+          state.wrong_login = 1;
+          state.err = result.data.err_message;
+        }
+        else{
+          state.wrong_login = 0;
+        }
       })
       .catch(err => {
         console.log(err);
+        state.wrong_login = 1;
+        state.err = "مشکل در ارتباط با سرور";
       });
     },
     registerNewUser: function({ commit, state, dispatch }, data){
+      state.wrong = 0;
       axios.post('/api/reg', {...data})
       .then(result => {
-        dispatch('checkAuth', {cb: () => commit('setLoginDialog', { val: !state.authObj.isAuth })});        
+        dispatch('checkAuth', {cb: () => commit('setLoginDialog', { val: !state.authObj.isAuth })});
+        if(!result.data.success){
+          state.wrong = 1;
+          state.err = result.data.err_message;
+        }
       })
       .catch(err => {
         console.log(err);
+        state.wrong = 1;
+        state.err = "مشکل در ارتباط با سرور";
       });
     },
     logout: function({commit, dispatch, state}){

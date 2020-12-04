@@ -1,11 +1,19 @@
 <template>
   <v-container class="d-flex flex-column justify-center align-center ">
-    <h1>
+    <h1 class="text-center">
       {{this.authObj.username}} عزیز <br/>
       خوش آمدید
     </h1>
-    <h3 class="orange--text">موجودی حساب: {{balance}} تومان</h3>
-    <chart :data="data" class="mt-8"/>
+    <v-card class="mt-8">
+      <v-card-title>نمودار فروش سال</v-card-title>
+      <v-card-text>
+        <chart :data="data" class="mt-8"/>
+      </v-card-text>
+      <v-card-subtitle>موجودی حساب: {{balance}} تومان</v-card-subtitle>
+      <v-card-actions>
+        <v-btn rounded outlined>درخواست تسویه حساب</v-btn>
+      </v-card-actions>
+    </v-card>
   </v-container>
 </template>
 

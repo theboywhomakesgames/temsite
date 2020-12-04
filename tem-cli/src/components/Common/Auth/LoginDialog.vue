@@ -5,7 +5,6 @@
       max-width="600px"
     >
       <v-card>
-
         <v-tabs
           class="full-widther d-inline-flex justify-center"
           v-model="tab"
@@ -128,6 +127,16 @@
           </v-container>
           <small>تکمیل فیلد های دارای * الزامی می باشد</small>
         </v-card-text>
+
+        <v-alert
+          class="ma-2"
+          type="error"
+          v-show="wrong_login > 0"
+          v-text="err"
+        >
+          Hi
+        </v-alert>
+
         <v-card-actions class="full-widther">
           <v-spacer></v-spacer>
           <div class="full-widther d-inline-flex justify-center flex-row-reverse">
@@ -153,7 +162,7 @@
 </template>
 
 <script>
-import { mapMutations, mapActions } from 'vuex';
+import { mapMutations, mapState, mapActions } from 'vuex';
 
 export default {
   props: ['reg'],
@@ -168,7 +177,7 @@ export default {
       address: "",
       zipcode: "",
       phone: "",
-      city: ""
+      city: "",
     }
   },
   methods: {
@@ -188,7 +197,7 @@ export default {
         this.register();
       }
     },
-    login: function() {
+    login: async function() {
       this.attemptLogin({username: this.username, password: this.password});
     },
     register: function() {
@@ -203,9 +212,6 @@ export default {
           phone: this.phone,
           city: this.city
         });
-      else{
-        alert("طول نام کاربری و پسورد باید بیشتر از ۵ باشد. طول آدرس و کد پستی باید بیشتر از ۹ باشد. طول شماره تلفن باید بیشتر از ۵ باشد.");
-      }
     },
   },
   computed: {
@@ -227,7 +233,8 @@ export default {
           this.setTab = true;
           this.tabidx = value;
         }
-    }
+    },
+    ...mapState(['err', 'wrong_login'])
   },
   watch: {
     dialog: function() {
@@ -236,7 +243,3 @@ export default {
   }
 }
 </script>
-
-<style>
-
-</style>

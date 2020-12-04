@@ -50,7 +50,7 @@
 
     <hr class="mt-8"/>
     <h3 class="mt-8 mb-4">انتخاب آدرس</h3>
-    <v-card @click="chosen = idx" v-for="(itm, idx) in addresses" :key="idx" max-height="300" max-width="300" outlined :color="idx === chosen ? 'secondary' : '#ddd'">
+    <v-card @click="chosen = idx" v-for="(itm, idx) in addresses" :key="idx" max-height="300" max-width="300" outlined :color="idx === chosen ? 'success' : '#scondary'">
       <v-card-title>
         {{itm.city}}
       </v-card-title>
