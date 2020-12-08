@@ -2,10 +2,10 @@
   <div>
     <v-app-bar color="primary" dark>
       <v-row align="center">
-        <v-col sm="11" class="d-inline-flex flex-row align-center">
+        <v-col sm="9" class="d-inline-flex flex-row align-center">
           <v-toolbar-title>داشبورد</v-toolbar-title>
         </v-col>
-        <v-col sm="1" class="d-inline-flex flex-row justify-end">
+        <v-col sm="3" class="d-inline-flex flex-row justify-end">
           <v-app-bar-nav-icon @click="openDrawer"></v-app-bar-nav-icon>
         </v-col>
       </v-row>

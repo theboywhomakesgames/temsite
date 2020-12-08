@@ -1,5 +1,31 @@
 <template>
-  <v-container>
+  <v-container v-if="authObj.isAuth">
+    <v-dialog width="500" v-model="dialog">
+      <v-card>
+        <v-card-title>
+          تکمیل خرید
+        </v-card-title>
+
+        <v-card-text>
+          فاکتور خرید:
+          {{receipt}}
+          <br/>
+          آدرس:
+          {{addresses[chosen].address}}
+          <br/>
+          مبلغ:
+          {{price}} تومان
+        </v-card-text>
+
+        <v-card-subtitle>
+          لطفا از درستی آدرس و موارد انتخاب شده مطمین شوید
+        </v-card-subtitle>
+
+        <v-card-actions>
+          <v-btn color="success" @click="proceedOrder">پرداخت</v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
     <h1>سبد خرید</h1>
     <v-simple-table v-if="cart.length > 0">
       <thead>
@@ -45,21 +71,35 @@
       </tbody>
     </v-simple-table>
     <h2 v-else>سبد خالی است</h2>
-    <v-btn color="success" class="ma-4" v-if="price > 0" @click="proceedOrder">پرداخت {{price}} تومان و تکمیل خرید</v-btn>
     <v-btn color="red" @click="resetCart" class="ma-4" v-if="price > 0">تخلیه سبد خرید</v-btn>
 
     <hr class="mt-8"/>
-    <h3 class="mt-8 mb-4">انتخاب آدرس</h3>
-    <v-card @click="chosen = idx" v-for="(itm, idx) in addresses" :key="idx" max-height="300" max-width="300" outlined :color="idx === chosen ? 'success' : '#scondary'">
-      <v-card-title>
-        {{itm.city}}
-      </v-card-title>
-      <v-card-text>
-        {{itm.address}}
-        {{itm.zipcode}}
-      </v-card-text>
-    </v-card>
+    <h3 class="mt-8 mb-4">آدرس مورد نظر را برای ارسال انتخاب نمایید</h3>
+
+    <v-container>
+      <v-layout row wrap>
+        <v-flex class="ma-1" md-2 lg2 v-for="(itm, idx) in addresses" :key="idx">
+          <v-card @click="chosen = idx" max-height="300" max-width="300" outlined :color="idx === chosen ? 'white' : '#444'">
+            <v-card-title>
+              <v-icon v-show="idx === chosen" color="green">mdi-check</v-icon>
+              {{itm.city}}
+            </v-card-title>
+            <v-card-text>
+              {{itm.address}}<br/>
+              {{itm.zipcode}}
+            </v-card-text>
+          </v-card>
+        </v-flex>
+      </v-layout>
+    </v-container>
+
+    <v-btn color="primary" class="ma-2" @click="gotoSettings">
+      افزودن آدرس
+    </v-btn>
+
+    <v-btn color="success" class="ma-2" v-if="price > 0" @click="showReceipt">پرداخت {{price}} تومان و تکمیل خرید</v-btn>
   </v-container>
+  <h1 v-else>برای ادامه خرید باید وارد شوید. اگر اکانت ندارید از منو و بخش ثبت نام اقدام نمایید.</h1>
 </template>
 
 <script>
@@ -70,7 +110,9 @@ export default {
   data: function() {
     return {
       addresses: [],
-      chosen: 0
+      chosen: 0,
+      dialog: false,
+      receipt: ""
     };
   },
   computed: {
@@ -84,6 +126,20 @@ export default {
     }
   },
   methods: {
+    showReceipt: function(){
+      if(!this.authObj.isAuth){
+        this.setLoginDialog({val: true});
+      }else{
+        this.receipt = "";
+        this.cart.forEach(element => {
+          this.receipt += element.name + " " + element.size + " " + element.count + " " + element.color + "      ";
+        });
+        this.dialog = true;
+      }
+    },
+    gotoSettings: function(){
+      this.$router.push("/settings");
+    },
     deleteFromCart: function(index){
       let payload = [];
       payload.push(index);
@@ -102,7 +158,8 @@ export default {
       if(!this.authObj.isAuth){
         this.setLoginDialog({val: true});
       }else{
-        this.placeOrder()
+        this.dialog = false;
+        this.placeOrder(this.addresses[this.chosen])
         .then(result => {
           console.log(result.data);
           if(result.data.success){

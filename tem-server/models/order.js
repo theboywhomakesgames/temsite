@@ -11,6 +11,18 @@ const orderSchema = new Schema({
     required: true,
     default: Date.now
   },
+  address: {
+    type: String,
+    required: true
+  },
+  zipcode: {
+    type: String,
+    required: true
+  },
+  city: {
+    type: String,
+    required: true
+  },
   status: {
     type: Number,
     required: true,

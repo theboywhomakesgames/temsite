@@ -9,14 +9,13 @@ export default new Vuetify({
     //dark: true,
     themes: {
       light: {
-        primary: "#1a1a1d",
-        secondary: "#c3073f",
-        accent: "#950740",
+        primary: "#e85a4f",
+        secondary: "#d8c3a5",
+        accent: "#8e8d8a",
         error: "#ff5722",
         warning: "#ff9800",
         info: "#bd9b57",
-        success: "#8bc34a",
-        background: "#242582"
+        success: "#8bc34a"
       },
     },
   },

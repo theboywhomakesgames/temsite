@@ -1,9 +1,19 @@
 <template>
   <v-container class="mt-8">
+    <v-alert v-show="added" dense color="success"><v-icon>mdi-check</v-icon> محصول به سبد خرید افزوده شد. برای نهایی کردن خرید به سبد خرید مراجعه کنید.</v-alert>
     <v-layout row wrap class="justify-center">
       <v-flex xs12 sm5 md4>
         <v-card>
-          <v-img :src="thisItem.image_urls?thisItem.image_urls[0]:null" height="500" weight="500"></v-img>
+          <!-- <v-img :src="thisItem.image_urls?thisItem.image_urls[0]:null" height="500" weight="500"></v-img> -->
+          <template>
+          <v-carousel hide-delimiters :show-arrows="images.length > 1">
+            <v-carousel-item
+              v-for="(item,i) in images"
+              :key="i"
+              :src="item.src"
+            ></v-carousel-item>
+          </v-carousel>
+        </template>
           <v-card-title>{{thisItem.name}}</v-card-title>
           <v-card-text>{{thisItem.description}}</v-card-text>
           <v-card-subtitle><v-chip color="primary">{{thisItem.price}} تومان</v-chip></v-card-subtitle>
@@ -31,8 +41,8 @@
           v-model="chosenColor"
         ></v-select>
         <v-text-field label="تعداد" type="number" v-model="count"></v-text-field>
-        <v-btn color="success" @click="placeOrder">افزودن به سبد خرید</v-btn><br/>
-        <v-btn color="success" class="mt-2" :disabled="canProceed" @click="gotoCart">تکمیل خرید</v-btn>
+        <v-btn color="black" class="white--text" @click="placeOrder">افزودن به سبد خرید</v-btn><br/>
+        <v-btn color="success" class="mt-2 black--text" :disabled="canProceed" @click="gotoCart">تکمیل خرید</v-btn>
       </v-flex>
     </v-layout>      
   </v-container>
@@ -49,7 +59,9 @@ export default {
       coloring: ["ملانژ", "سفید"],
       chosenSize: null,
       chosenColor: null,
-      count: 1
+      count: 1,
+      added: false,
+      images: []
     }
   },
   computed: {
@@ -71,6 +83,10 @@ export default {
       this.getAllItems({_id: this.itemId})
       .then(result => {
         this.thisItem = result.data[0];
+        console.log(this.thisItem);
+        this.thisItem.image_urls.forEach(url => {
+          this.images.push({src: url});
+        });
       })
       .catch(err => {
         console.log(err);
@@ -78,8 +94,10 @@ export default {
     },
     placeOrder: function() {
       if(this.chosenSize && this.chosenColor){
-        if(this.count > 0)
+        if(this.count > 0){
           this.addToCart({payload: [{...this.thisItem, size: this.chosenSize, color: this.chosenColor, count: this.count, seller: this.sellerUsername}], cookie: this.$cookies});
+          this.added = true;
+        }
       }
       else{
         // err

@@ -2,20 +2,19 @@
   <div>
     <v-app-bar color="primary" dark>
       <v-row align="center">
-        <v-col sm="11" class="d-inline-flex flex-row align-center">
+        <v-col sm="9" class="d-inline-flex flex-row align-center">
           <router-link to="/">
             <img class="logo" src="../../assets/logo.png" />
           </router-link>
-          <v-toolbar-title>فروشگاه تم</v-toolbar-title>
         </v-col>
-        <v-col sm="1" class="d-inline-flex align-center flex-row justify-end">
-          <v-btn icon v-if="cart.length > 0" @click="gotoCart" class="ml-4">
+        <v-col sm="3" class="d-inline-flex align-center flex-row justify-end">
+          <v-btn icon v-if="cart.length > 0" @click="gotoCart">
             <v-badge color="secondary" :content="cart.length">
               <v-icon>mdi-cart</v-icon>
             </v-badge>
           </v-btn>
 
-          <v-btn @click="openDrawer" rounded color="white" class="black--text">
+          <v-btn @click="openDrawer" rounded color="white" class="black--text ma-0 pl-1 pr-1">
             منو<v-app-bar-nav-icon class="black--text"></v-app-bar-nav-icon>
           </v-btn>
         </v-col>

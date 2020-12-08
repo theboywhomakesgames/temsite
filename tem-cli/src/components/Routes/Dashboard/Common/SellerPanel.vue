@@ -1,5 +1,24 @@
 <template>
   <v-container class="d-flex flex-column justify-center align-center ">
+    <v-alert dense :color="color" v-show="success !== 0" v-text="err"></v-alert>
+    <v-dialog v-model="dialog" width="500">
+      <v-card>
+        <v-card-title>
+          درخواست تسویه حساب
+        </v-card-title>
+        <v-card-text>
+          شماره کارت و نام و نام خانوادگی را وارد کنید
+          <v-textarea v-model="content">
+
+          </v-textarea>
+          درخواست در ۴۸ ساعت آینده انجام خواهد شد. در صورت ناچیز بودن موجودی ممکن است بیشتر طول بکشد.
+        </v-card-text>
+        <v-card-actions>
+          <v-btn @click="sendTicket" color="primary">ثبت درخواست</v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
+    
     <h1 class="text-center">
       {{this.authObj.username}} عزیز <br/>
       خوش آمدید
@@ -11,7 +30,7 @@
       </v-card-text>
       <v-card-subtitle>موجودی حساب: {{balance}} تومان</v-card-subtitle>
       <v-card-actions>
-        <v-btn rounded outlined>درخواست تسویه حساب</v-btn>
+        <v-btn rounded outlined @click="toggleDialog">درخواست تسویه حساب</v-btn>
       </v-card-actions>
     </v-card>
   </v-container>
@@ -25,7 +44,12 @@ export default {
   data: function() {
     return {
       sales: [],
-      balance: 0
+      balance: 0,
+      dialog: false,
+      content: "",
+      success: 0,
+      err: "",
+      color: ""
     }
   },
   components: {
@@ -60,7 +84,46 @@ export default {
     }
   },
   methods: {
-    ...mapActions(['getMySales', 'getMyBalance'])
+    ...mapActions(['getMySales', 'getMyBalance', 'createTicket']),
+    toggleDialog: function() {
+      this.dialog = !this.dialog;
+    },
+    sendTicket: function() {
+      if(this.content.length > 10){
+        let data = {
+          title: "درخواست تسویه حساب",
+          contents: [
+            {
+              text: this.content,
+              sender: this.authObj.username,
+              date: Date.now()
+            }
+          ]
+        };
+
+        this.createTicket(data)
+        .then(result => {
+          result = result.data;
+          if(result.success){
+            this.success = 1;
+            this.color = "success";
+            this.err = "درخواست شما با موفقیت ثبت شد. لطفا از ثبت دوباره درخواست خودداری نمایید";
+          }else{
+            this.success = -1;
+            this.color = "red";
+            this.err = result.err_message;
+          }
+        })
+        .catch(err => {
+          this.success = -1;
+          this.err = "عدم ارتباط با سرور";
+          this.color = "warning";
+        });
+
+        this.dialog = false;
+        this.content = "";
+      }
+    }
   },
   mounted() {
     this.getMySales()

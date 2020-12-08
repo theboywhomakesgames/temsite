@@ -18,12 +18,20 @@ import NavBar from "./components/NavBars/NavBar";
 import NotFound from './components/Common/404';
 import CartPage from './components/Routes/Cart';
 import SuccessOrder from './components/Routes/SuccessOrder';
+import UserSettings from './components/Routes/UserSettings';
 
 Vue.use(VueRouter);
 
 const router = new VueRouter({
   mode: 'history',
   routes: [
+    {
+      path : '/settings', components: {
+        default: UserSettings,
+        nav: NavBar,
+        inApp: UserSettings,
+      }
+    },
     {
       path : '/login', components: {
         default: Login,

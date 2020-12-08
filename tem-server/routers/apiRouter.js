@@ -3,6 +3,7 @@ const router = express.Router();
 
 const itemController = require('../controllers/itemController');
 const userController = require('../controllers/userController');
+const ticketController = require('../controllers/ticketController');
 const item = require('../models/item');
 
 router.post('/getItem', itemController.getItem);
@@ -16,5 +17,8 @@ router.post('/getOrdersOf', itemController.getOrdersOf);
 router.post('/getSalesOf', userController.getSalesOf);
 router.post('/getAddressesOf', userController.getAddressesOf);
 router.post('/getBalanceOf', itemController.getBalanceOf);
+router.post('/addAddress', userController.addAddress);
+router.post('/createTicket', ticketController.createTicket);
+router.post('/replyToTicket', ticketController.replyToTicket);
 
 module.exports = router;

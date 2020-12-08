@@ -3,6 +3,7 @@ const bcrypt = require('bcrypt');
 const { json } = require('body-parser');
 const Order = require('../models/order');
 const mongoose = require('mongoose');
+const { add } = require('lodash');
 
 module.exports.register = (req, res, next) => {
   let data = req.body;
@@ -157,25 +158,34 @@ module.exports.getAddressesOf = (req, res, next) => {
 module.exports.addAddress = (req, res, next) => {
   let username = req.session.username;
   let newAddresses = req.body.addresses;
-  User.find({username: username})
-  .then(user => {
-    if(user){
-      user.addresses = user.addresses.concat(newAddresses);
-      user.save()
-      .then(result => {
-        res.json({success: true});
-      })
-      .catch(err => {
-        console.log(err);
-        res.json({success: false, err_message: "مشکل در سیو"});        
-      });
-    }
-    else{
+  console.log("adding address to " + username);
+
+  if(!newAddresses || newAddresses.length < 1 || !username || username.length < 3){
+    res.json({success: false, err_message: "مشکل در ثبت آدرس"});
+  }
+  else{
+    User.findOne({username: username})
+    .then(user => {
+      if(user){
+        console.log("found user");
+        user.addresses = user.addresses.concat(newAddresses);
+        user.save()
+        .then(result => {
+          console.log("done");
+          res.json({success: true});
+        })
+        .catch(err => {
+          console.log(err);
+          res.json({success: false, err_message: "مشکل در سیو"});        
+        });
+      }
+      else{
+        res.json({success: false, err_message: "یوزر نیم اشتباه"});
+      }
+    })
+    .catch(err => {
+      console.log(err);
       res.json({success: false, err_message: "یوزر نیم اشتباه"});
-    }
-  })
-  .catch(err => {
-    console.log(err);
-    res.json({success: false, err_message: "یوزر نیم اشتباه"});
-  });
+    });
+  }  
 };

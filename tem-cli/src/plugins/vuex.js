@@ -139,11 +139,14 @@ export default new Vuex.Store({
         console.log(err);
       }
     },
-    placeOrder : function({ commit, state }){
+    placeOrder : function({ commit, state }, address){
       if(state.cart.length > 0 && state.authObj.isAuth){
         return axios.post('/api/ap/placeOrder', {
           buyer: state.authObj.username,
-          cart: [...state.cart]
+          cart: [...state.cart],
+          address: address.address,
+          zipcode: address.zipcode,
+          city: address.city
         });
       }
     },
@@ -158,6 +161,15 @@ export default new Vuex.Store({
     },
     getMyAddresses: ({state, dispatch}) => {
       return axios.post('api/ap/getAddressesOf', {username: state.authObj.username});
+    },
+    addNewAddress: ({state}, addresses) => {
+      return axios.post('api/ap/addAddress', {username: state.authObj.username, addresses: addresses});
+    },
+    createTicket: ({state}, data) => {
+      return axios.post('api/ap/createTicket', data);
+    },
+    replyToTicket: ({state}, data) => {
+      return axios.post('api/ap/replyToTicket', data);
     }
   }
 });
